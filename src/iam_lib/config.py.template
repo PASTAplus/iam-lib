@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+:Mod:
+    config.py
+
+:Synopsis:
+    IAM lib configurations
+
+:Author:
+    servilla
+
+:Created:
+    5/7/25
+"""
+
+
+class Config:
+    ALLOWED_HOSTS = ("localhost", "127.0.0.1", "auth.edirepository.org", "auth-s.edirepository.org", "auth-d.edirepository.org")
+
+    VALID_KWARGS = (
+        "principal",            # EDI-ID (must begin with "edi-")
+        "eml",                  # EML document (XML)
+        "access",               # EML access element (XML)
+        "resource_key",         # Resource key (unique identifier)
+        "resource_label",       # Resource label (non-unique)
+        "resource_type",        # Resource type (enumerated set: collection, package, eml, report, data, ezeml, ...)
+        "parent_resource_key",  # Resource key of parent
+        "descendants",          # Boolean (True or False)
+        "permission",           # Resource permission (enumerated set: read, write, or changePermission)
+        "token"                 # Base64 encoded JWT token of the client
+    )
+
