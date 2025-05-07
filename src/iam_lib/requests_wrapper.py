@@ -28,13 +28,25 @@ class RequestsWrapper():
     Wraps the requests package to provide IAM-specific functionality.
 
     """
-    def __init__(self, url: str, token: dict, **kwargs):
+    def __init__(self, url: str, token: str, kwargs: dict):
 
+        print("\n")
+
+        print(url)
+
+        breakpoint()
+        
         try:
             urlparse(url)
         except ValueError as e:
             raise IAMInvalidUrlError(e)
 
+        print(token)
+        
         if len(token) == 0:
             msg = "Invalid token: token cannot be empty"
             raise IAMTokenError(msg)
+
+        for key, value in kwargs.items():
+            print(f"{key}: {value}")
+
