@@ -182,3 +182,7 @@ cython_debug/
 
 # JetBrains
 .idea
+
+
+# Project ignores
+config.py
