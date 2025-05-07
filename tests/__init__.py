@@ -23,3 +23,4 @@ daiquiri.setup(level=logging.DEBUG,
 logger = daiquiri.getLogger(__name__)
 
 sys.path.insert(0, Path("../src").resolve().as_posix())
+test_data_path = cwd + "/data"

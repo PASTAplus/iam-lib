@@ -14,14 +14,20 @@
 from urllib.parse import urlparse
 
 import daiquiri
+import jwt
 import requests
 
-from exceptions import IAMInvalidUrlError, IAMParameterError, IAMTokenError
+from iam_lib.exceptions import IAMInvalidUrlError, IAMParameterError, IAMTokenError
 
 logger = daiquiri.getLogger(__name__)
 
 
-class requestsWrapper():
+class RequestsWrapper():
+    """Wrapper for IAM-specific use of the requests package.
+
+    Wraps the requests package to provide IAM-specific functionality.
+
+    """
     def __init__(self, url: str, token: dict, **kwargs):
 
         try:
@@ -30,9 +36,5 @@ class requestsWrapper():
             raise IAMInvalidUrlError(e)
 
         if len(token) == 0:
-            msg = f"Invalid token: token cannot be empty"
+            msg = "Invalid token: token cannot be empty"
             raise IAMTokenError(msg)
-
-        # if accept not in ("JSON", "XML"):
-        #     msg = f"Invalid accept type {accept}. One of 'JSON' or 'XML' expected."
-        #     raise IAMParameterError(msg)
