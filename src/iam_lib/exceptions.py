@@ -19,12 +19,20 @@ class IAMLibError(Exception):
     pass
 
 
-class IAMInvalidUrlError(IAMLibError):
+class IAMInvalidAccept(IAMLibError):
+    pass
+
+
+class IAMInvalidUrl(IAMLibError):
+    pass
+
+
+class IAMInvalidVerb(IAMLibError):
     pass
 
 
 class IAMParameterError(IAMLibError):
-    pass
+        pass
 
 
 class IAMTokenError(IAMLibError):
