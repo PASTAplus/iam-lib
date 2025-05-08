@@ -14,6 +14,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cffi-1.17.1-py312h06ac9bb_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/cryptography-44.0.3-py312hda17c39_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/daiquiri-3.0.0-pyhd3deb0d_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/exceptiongroup-1.2.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/h2-4.2.0-pyhd8ed1ab_0.conda
@@ -66,6 +67,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/cffi-1.17.1-py312hac81daf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/cryptography-44.0.3-py312he723553_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/daiquiri-3.0.0-pyhd3deb0d_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/exceptiongroup-1.2.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/h2-4.2.0-pyhd8ed1ab_0.conda
@@ -117,6 +119,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/cffi-1.17.1-py312hf857d28_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/cryptography-44.0.3-py312h0995e51_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/daiquiri-3.0.0-pyhd3deb0d_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/exceptiongroup-1.2.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/h2-4.2.0-pyhd8ed1ab_0.conda
@@ -161,6 +164,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/cffi-1.17.1-py312h0fad829_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/cryptography-44.0.3-py312hf9bd80e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/daiquiri-3.0.0-pyhd3deb0d_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/exceptiongroup-1.2.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/h2-4.2.0-pyhd8ed1ab_0.conda
@@ -205,6 +209,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/cffi-1.17.1-py312h4389bb4_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/cryptography-44.0.3-py312h9500af3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/daiquiri-3.0.0-pyhd3deb0d_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/exceptiongroup-1.2.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/h2-4.2.0-pyhd8ed1ab_0.conda
@@ -506,6 +511,84 @@ packages:
   license_family: BSD
   size: 27011
   timestamp: 1733218222191
+- conda: https://conda.anaconda.org/conda-forge/linux-64/cryptography-44.0.3-py312hda17c39_0.conda
+  sha256: 171a5c47dfc7460c9c24e98b79ea12c50d8730da8beb4da4718003992dd59cbd
+  md5: ce37b0d86bc626d5b5fa4ccc49089b34
+  depends:
+  - __glibc >=2.17,<3.0.a0
+  - cffi >=1.12
+  - libgcc >=13
+  - openssl >=3.5.0,<4.0a0
+  - python >=3.12,<3.13.0a0
+  - python_abi 3.12.* *_cp312
+  constrains:
+  - __glibc >=2.17
+  license: Apache-2.0 AND BSD-3-Clause AND PSF-2.0 AND MIT
+  license_family: BSD
+  size: 1599644
+  timestamp: 1746242448065
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/cryptography-44.0.3-py312he723553_0.conda
+  sha256: da0dac711812c6b001f4964bce1c7b38dd679532f391cd2f4e695287ae1e6188
+  md5: 464f1e8d0c55c14d358f9e226d2ca24f
+  depends:
+  - cffi >=1.12
+  - libgcc >=13
+  - openssl >=3.5.0,<4.0a0
+  - python >=3.12,<3.13.0a0
+  - python >=3.12,<3.13.0a0 *_cpython
+  - python_abi 3.12.* *_cp312
+  constrains:
+  - __glibc >=2.17
+  license: Apache-2.0 AND BSD-3-Clause AND PSF-2.0 AND MIT
+  license_family: BSD
+  size: 1574894
+  timestamp: 1746242229110
+- conda: https://conda.anaconda.org/conda-forge/osx-64/cryptography-44.0.3-py312h0995e51_0.conda
+  sha256: 16d58111b889c431452f525cb2bd70abe84ac7f5684e7fb3044950199e62ef4d
+  md5: 72747f3d2011e4290a04816f85f85fc2
+  depends:
+  - __osx >=10.13
+  - cffi >=1.12
+  - openssl >=3.5.0,<4.0a0
+  - python >=3.12,<3.13.0a0
+  - python_abi 3.12.* *_cp312
+  constrains:
+  - __osx >=10.13
+  license: Apache-2.0 AND BSD-3-Clause AND PSF-2.0 AND MIT
+  license_family: BSD
+  size: 1522296
+  timestamp: 1746242386783
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/cryptography-44.0.3-py312hf9bd80e_0.conda
+  sha256: c7e27f5f3e81f27b3d487de2787ed8b1af89fef1a7a031ac2455a8795f1e34d3
+  md5: 184c32eb6f088b2653d1cb67e23726b8
+  depends:
+  - __osx >=11.0
+  - cffi >=1.12
+  - openssl >=3.5.0,<4.0a0
+  - python >=3.12,<3.13.0a0
+  - python >=3.12,<3.13.0a0 *_cpython
+  - python_abi 3.12.* *_cp312
+  constrains:
+  - __osx >=11.0
+  license: Apache-2.0 AND BSD-3-Clause AND PSF-2.0 AND MIT
+  license_family: BSD
+  size: 1483171
+  timestamp: 1746242274114
+- conda: https://conda.anaconda.org/conda-forge/win-64/cryptography-44.0.3-py312h9500af3_0.conda
+  sha256: 63e0d5109ff7db3eb950cb452d1e28805ebd66bc01764c04595be6dd1ae6c5a9
+  md5: 1146fb1cae983582038ae05a4a497fd3
+  depends:
+  - cffi >=1.12
+  - openssl >=3.5.0,<4.0a0
+  - python >=3.12,<3.13.0a0
+  - python_abi 3.12.* *_cp312
+  - ucrt >=10.0.20348.0
+  - vc >=14.2,<15
+  - vc14_runtime >=14.29.30139
+  license: Apache-2.0 AND BSD-3-Clause AND PSF-2.0 AND MIT
+  license_family: BSD
+  size: 1355018
+  timestamp: 1746242492826
 - conda: https://conda.anaconda.org/conda-forge/noarch/daiquiri-3.0.0-pyhd3deb0d_0.tar.bz2
   sha256: dec91f8f386f7666d81f1d42dd4c8ea33e5f967f06c9f511d30706c04d118f76
   md5: 281c43bb8931555d537d3ce16fa9b2e8
