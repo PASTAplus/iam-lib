@@ -11,6 +11,7 @@
     2025-05-05
 
 """
+from pathlib import Path
 from urllib.parse import urlparse
 
 import daiquiri
@@ -18,7 +19,7 @@ import jwt
 import requests
 
 import iam_lib.exceptions
-from iam_lib.config import Config
+
 
 logger = daiquiri.getLogger(__name__)
 
@@ -29,21 +30,22 @@ class RequestsWrapper:
     Wraps the requests package to provide IAM-specific functionality.
 
     """
-    def __init__(self, verb: str, url: str, token: str, accept: str, kwargs: dict):
-        """__init__
-        Args:
-            verb (str): HTTP verb to use
-            url (str): Auth target URL
-            token (str): Base64 encoded JWT token of requesting user profile
-            accept (str): Accept type either JSON or XML
-            kwargs (dict): Additional POST or PUT arguments as key/value pairs
-        """
+    def __init__(
+            self,
+            verb: str, # HTTP verb to use
+            scheme: str, # protocol scheme (http or https)
+            host: str, # network host domain or address
+            token: str, # Base64 encoded JWT token of user making request
+            public_key: bytes, # Token signing public key
+            algorithm: str, # Token signing algorithm
+            accept: str # Accept type either JSON or XML
+    ):
 
         self.verb = _validate_verb(verb)
-        self.url = _validate_url(url)
-        self.token = _validate_token(token)
+        self.scheme = _validate_scheme(scheme)
+        self.host = _validate_host(host)
+        self.token = _validate_token(token, public_key, algorithm)
         self.accept = _validate_accept(accept)
-        self.kwargs = _validate_kwargs(kwargs)
 
 
 def _validate_verb(verb: str) -> str:
@@ -52,35 +54,60 @@ def _validate_verb(verb: str) -> str:
     return verb.lower()
 
 
-def _validate_url(url: str) -> str:
-    try:
-        result = urlparse(url)
-        if result.scheme not in ("http", "https"):
-            msg = f"Invalid URL: scheme '{url}' should be 'http' or 'https'"
-            raise iam_lib.exceptions.IAMInvalidUrl(msg)
-        if result.netloc not in Config.ALLOWED_HOSTS:
-            msg = f"Invalid URL: hostname '{url}' should be one of '{",".join([_ for _ in Config.ALLOWED_HOSTS])}'"
-            raise iam_lib.exceptions.IAMInvalidUrl(msg)
-    except ValueError as e:
-        raise iam_lib.exceptions.IAMInvalidUrl(e)
-    return url
+def _validate_scheme(scheme: str) -> str:
+    if scheme.lower() not in ("http", "https"):
+        raise iam_lib.exceptions.IAMInvalidScheme(f"Invalid URL: scheme '{scheme}' should be 'http' or 'https'")
+    return scheme.lower()
 
-def _validate_token(token: str) -> str:
+
+def _validate_host(host: str) -> str:
+    allowed_hosts = (
+        "localhost",
+        "127.0.0.1",
+        "auth.edirepository.org",
+        "auth-s.edirepository.org",
+        "auth-d.edirepository.org"
+    )
+    if host not in allowed_hosts:
+        msg = f"Invalid host '{host}': must be one of '{", ".join(allowed_hosts)}'"
+        raise iam_lib.exceptions.IAMInvalidHost(msg)
+    return host
+
+
+def _validate_token(token: str, public_key: bytes, algorithm: str) -> str:
+    try:
+        jwt_token = jwt.decode(token, public_key, algorithms=algorithm)
+    except jwt.InvalidTokenError as e:
+        raise iam_lib.exceptions.IAMInvalidToken(f"Invalid token: {e}")
     return token
+
 
 def _validate_accept(accept: str) -> str:
     if accept.lower() not in ("json", "xml"):
         raise iam_lib.exceptions.IAMInvalidAccept(f"Invalid accept type '{accept}': must be 'json' or 'xml'")
     return "application/" + accept.lower()
 
+
 def _validate_kwargs(kwargs: dict) -> dict:
+    valid_kwargs = (
+        "principal",            # EDI-ID (must begin with "edi-")
+        "eml",                  # EML document (XML)
+        "access",               # EML access element (XML)
+        "resource_key",         # Resource key (unique identifier)
+        "resource_label",       # Resource label (non-unique)
+        "resource_type",        # Resource type (enumerated set: collection, package, eml, report, data, ezeml, ...)
+        "parent_resource_key",  # Resource key of parent
+        "descendants",          # Boolean (True or False)
+        "permission",           # Resource permission (enumerated set: read, write, or changePermission)
+        "token"                 # Base64 encoded JWT token of the client
+    )
     for key,value in kwargs.items():
-        if key not in Config.VALID_KWARGS:
-            raise iam_lib.exceptions.IAMParameterError(f"Invalid keyword argument '{key}'")
+        if key not in valid_kwargs:
+            raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument '{key}'")
         if key == "descendants":
             if value not in ("True", "False"):
-                raise iam_lib.exceptions.IAMParameterError(f"Invalid keyword argument for 'descendants': value '{value}' must be True or False")
+                raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument for 'descendants': value '{value}' must be True or False")
         if key == "permission":
             if value not in ("read", "write", "changePermission"):
-                raise iam_lib.exceptions.IAMParameterError(f"Invalid keyword argument for 'permission': value '{value}' must be 'read', 'write', or 'changePermission'")
+                raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument for 'permission': value '{value}' must be 'read', 'write', or 'changePermission'")
     return kwargs

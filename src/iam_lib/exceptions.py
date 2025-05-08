@@ -15,25 +15,33 @@ import daiquiri
 
 logger = daiquiri.getLogger(__name__)
 
-class IAMLibError(Exception):
+class IAMLibException(Exception):
     pass
 
 
-class IAMInvalidAccept(IAMLibError):
+class IAMInvalidAccept(IAMLibException):
     pass
 
 
-class IAMInvalidUrl(IAMLibError):
+class IAMInvalidHost(IAMLibException):
     pass
 
 
-class IAMInvalidVerb(IAMLibError):
+class IAMInvalidScheme(IAMLibException):
     pass
 
 
-class IAMParameterError(IAMLibError):
+class IAMInvalidUrl(IAMLibException):
+    pass
+
+
+class IAMInvalidVerb(IAMLibException):
+    pass
+
+
+class IAMInvalidParameter(IAMLibException):
         pass
 
 
-class IAMTokenError(IAMLibError):
+class IAMInvalidToken(IAMLibException):
     pass
