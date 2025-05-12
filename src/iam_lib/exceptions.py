@@ -13,7 +13,9 @@
 """
 import daiquiri
 
+
 logger = daiquiri.getLogger(__name__)
+
 
 class IAMLibException(Exception):
     pass
