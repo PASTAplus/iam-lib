@@ -13,53 +13,59 @@
 """
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest.mock import MagicMock
 
 import jwt
 import pytest
+from requests.cookies import RequestsCookieJar  # For mocking
+from requests.structures import CaseInsensitiveDict  # For mocking
 
 from iam_lib.rest_api import Client
-
-scheme = "HTTPS"
-host = "auth-d.edirepository.org"
-public_key_path = "./data/public_key.pem"
-private_key_path = "./data/private_key.pem"
-algorithm = "ES256"
+from iam_lib.response import Response
 
 
 @pytest.fixture(scope="function")
 def client():
-    client = Client(
-        scheme=scheme,
-        host=host,
-        public_key_path=public_key_path,
-        algorithm=algorithm
-    )
-    return client
-
-
-def test_client_init():
-    """ Test the initialization of the Client class.
-        verb (str): HTTP verb to use
-        scheme (str): protocol scheme (http or https)
-        host (str): network host domain or address
-        token (str): Base64 encoded JWT token of user making request
-        accept (str): Accept type either JSON or XML
-    """
-    token = _make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
-    client = Client(
-        scheme="https",
+    return Client(
+        scheme="HTTPS",
         host="localhost",
-        public_key_path=public_key_path,
-        algorithm=algorithm,
+        public_key_path="./data/public_key.pem",
+        algorithm="ES256"
     )
 
-    assert client
+
+@pytest.fixture(scope="function")
+def cookies():
+    cookies = RequestsCookieJar()
+    cookies.set(
+        name="pasta_token",
+        value=f"{_make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))}",
+        domain="edirepository.org"
+    )
+    return cookies
 
 
-def test_api_get(client):
+@pytest.fixture(scope="function")
+def headers():
+    headers = CaseInsensitiveDict()
+    headers["Content-Type"] = "application/json"
+    return headers
+
+
+def test_api_get(client, cookies, headers, mocker):
     token = _make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
+    mock_requests_response = MagicMock(
+        status_code=200,
+        reason="OK",
+        headers=headers,
+        cookies=cookies,
+        text='{"GET": "OK"}'
+    )
+    mock_client_response = Response(mock_requests_response)
+    mocker.patch.object(client, "get", return_value=mock_client_response)
     response = client.get(token=token, route="/auth/v1/ping", accept="JSON")
-    assert response["status_code"] == 200
+    assert response.status_code == 200
+    assert response.body == '{"GET": "OK"}'
 
 
 def test_api_post(client):
@@ -69,7 +75,7 @@ def test_api_post(client):
         "eml": "<eml></eml>"
     }
     response = client.post(token=token, route="/auth/v1/ping", kwargs=kwargs, accept="JSON")
-    assert response["status_code"] == 200
+    assert response.status_code == 200
 
 
 def _make_token(exp: datetime) -> str:
@@ -93,7 +99,8 @@ def _make_token(exp: datetime) -> str:
         'sn': None,
         'sub': 'EDI-3fa734a7cd6e40998a5c2b5486b6eced'
     }
+    private_key_path = "./data/private_key.pem"
+    algorithm = "ES256"
     token = jwt.encode(payload, Path(private_key_path).read_text().encode("utf-8"), algorithm=algorithm)
-
     return token
 

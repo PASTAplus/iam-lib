@@ -61,5 +61,5 @@ class IAMRequestError(IAMLibException):
 
 class IAMResponseError(IAMLibException):
     def __init__(self, response):
-        super().__init__(f"IAM REST API returned: '{response["status_code"]} {response["reason"]}'")
+        super().__init__(f"IAM REST API returned: '{response.status_code} {response.reason}'")
         self.response = response

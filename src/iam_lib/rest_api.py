@@ -15,12 +15,11 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import daiquiri
-import jwt
 import requests
 
+from iam_lib.response import Response
 import iam_lib.exceptions
 import iam_lib.token
-
 
 logger = daiquiri.getLogger(__name__)
 
@@ -41,49 +40,93 @@ class Client:
         self.public_key = _validate_public_key(Path(public_key_path))
         self.algorithm = algorithm
 
+    def post(self, token: str, route: str, kwargs: dict, accept: str) -> Response:
+        """Send a POST request to the IAM REST API
 
-    def post(self, token: str, route: str, kwargs: dict, accept: str) -> str:
+        Args:
+            token (str): IAM JWT token
+            route (str): IAM route
+            kwargs (dict): IAM POST request key/value pairs
+            accept (str): IAM POST accept type (either JSON or XML)
+         """
         iam_lib.token.validate(token, self.public_key, self.algorithm)
         _validate_route(route)
         _validate_accept(accept)
         cookies = {"pasta_token": token}
-        response = {}
         url = self.scheme + "://" + self.host + "/" + route
-
         try:
             request = requests.post(url, data=kwargs, cookies=cookies, headers={"Accept-Type": f"{accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
-
-        response["status_code"] = request.status_code
-        response["reason"] = request.reason
-        response["headers"] = dict(request.headers)
-        response["cookies"] = dict(request.cookies)
-        response["body"] = request.text
-        if request.status_code != 200:
+        response = Response(request)
+        if response.status_code != 200:
             raise iam_lib.exceptions.IAMResponseError(response)
         return response
 
+    def put(self, token: str, route: str, kwargs: dict, accept: str) -> Response:
+        """Send a PUT request to the IAM REST API
 
-    def get(self, token: str, route: str, accept: str) -> dict:
+        Args:
+            token (str): IAM JWT token
+            route (str): IAM route
+            kwargs (dict): IAM POST request key/value pairs
+            accept (str): IAM POST accept type (either JSON or XML)
+         """
         iam_lib.token.validate(token, self.public_key, self.algorithm)
         _validate_route(route)
         _validate_accept(accept)
         cookies = {"pasta_token": token}
-        response = {}
         url = self.scheme + "://" + self.host + "/" + route
+        try:
+            request = requests.put(url, data=kwargs, cookies=cookies, headers={"Accept-Type": f"{accept}"})
+        except requests.exceptions.RequestException as e:
+            raise iam_lib.exceptions.IAMRequestError(e)
+        response = Response(request)
+        if response.status_code != 200:
+            raise iam_lib.exceptions.IAMResponseError(response)
+        return response
 
+    def get(self, token: str, route: str, accept: str) -> Response:
+        """Send a GET request to the IAM REST API
+
+        Args:
+            token (str): IAM JWT token
+            route (str): IAM route
+            accept (str): IAM POST accept type (either JSON or XML)
+         """
+        iam_lib.token.validate(token, self.public_key, self.algorithm)
+        _validate_route(route)
+        _validate_accept(accept)
+        cookies = {"pasta_token": token}
+        url = self.scheme + "://" + self.host + "/" + route
         try:
             request = requests.get(url, cookies=cookies, headers={"Accept-Type": f"{accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
+        response = Response(request)
+        if response.status_code != 200:
+            raise iam_lib.exceptions.IAMResponseError(response)
+        return response
 
-        response["status_code"] = request.status_code
-        response["reason"] = request.reason
-        response["headers"] = dict(request.headers)
-        response["cookies"] = dict(request.cookies)
-        response["body"] = request.text
-        if request.status_code != 200:
+    def delete(self, token: str, route: str, accept: str) -> Response:
+        """Send a DELETE request to the IAM REST API
+
+        Args:
+            token (str): IAM JWT token
+            route (str): IAM route
+            accept (str): IAM POST accept type (either JSON or XML)
+         """
+        iam_lib.token.validate(token, self.public_key, self.algorithm)
+        _validate_route(route)
+        _validate_accept(accept)
+        cookies = {"pasta_token": token}
+        url = self.scheme + "://" + self.host + "/" + route
+        try:
+            request = requests.delete(url, cookies=cookies, headers={"Accept-Type": f"{accept}"})
+        except requests.exceptions.RequestException as e:
+            raise iam_lib.exceptions.IAMRequestError(e)
+        response = Response(request)
+        if response.status_code != 200:
             raise iam_lib.exceptions.IAMResponseError(response)
         return response
 
