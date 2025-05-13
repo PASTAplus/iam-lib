@@ -32,7 +32,7 @@ def add_eml(
 
     Args:
         client (iam_lib.client.Client): IAM REST API client
-        principal (str): IAM principal owner (either user profile EDI-ID or IdP identifier)
+        principal (str): IAM principal owner (user profile EDI-ID or IdP identifier)
         eml (str): valid EML document
 
     Returns:

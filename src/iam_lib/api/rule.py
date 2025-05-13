@@ -3,10 +3,10 @@
 
 """
 :Mod:
-    resource
+    rule
 
 :Synopsis:
-    IAM REST API resource client
+    IAM REST API rule client
 
 :Author:
     servilla
@@ -23,21 +23,18 @@ import iam_lib.models.response_model as response_model
 logger = daiquiri.getLogger(__name__)
 
 
-def create_resource(
+def create_rule(
         client: Client,
         resource_key: str,
-        resource_label: str,
-        resource_type: str,
-        parent_resource_key: str = None
+        principal: str,
+        permission: str
 ) -> None:
-    """Create resource.
-
+    """Create rule.
     Args:
         client (iam_lib.client.Client): IAM REST API client
         resource_key (str): unique identifier for the resource
-        resource_label (str): human interpretable label of the resource
-        resource_type (str): type of resource
-        parent_resource_key (str): unique identifier for the parent resource if exists; otherwise None
+        principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
+        permission (str): IAM permission (read, write, or changePermission)
 
     Returns:
         None
@@ -45,33 +42,31 @@ def create_resource(
     Raises:
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
+
     """
-    route = "/auth/v1/resource"
+    route = "/auth/v1/rule"
     parameters = {
         "resource_key": resource_key,
-        "resource_label": resource_label,
-        "resource_type": resource_type,
-        "parent_resource_key": parent_resource_key
+        "principal": principal,
+        "permission": permission,
     }
     client.response = client.post(route=route, parameters=parameters)
     return None
 
 
-def update_resource(
+def update_rule(
         client: Client,
         resource_key: str,
-        resource_label: str,
-        resource_type: str,
-        parent_resource_key: str = None
+        principal: str,
+        permission: str,
 ) -> None:
-    """Update resource.
+    """Update rule.
 
     Args:
         client (iam_lib.client.Client): IAM REST API client
         resource_key (str): unique identifier for the resource
-        resource_label (str): human interpretable label of the resource
-        resource_type (str): type of resource
-        parent_resource_key (str): unique identifier for the parent resource if exists; otherwise None
+        principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
+        permission (str): IAM permission (read, write, or changePermission)
 
     Returns:
         None
@@ -80,83 +75,104 @@ def update_resource(
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
-    route = f"/auth/v1/resource/{resource_key}"
+    route = f"/auth/v1/rule/{resource_key}/{principal}"
     parameters = {
-        "resource_label": resource_label,
-        "resource_type": resource_type,
-        "parent_resource_key": parent_resource_key
+        "permission": permission
     }
     client.response = client.put(route=route, parameters=parameters)
     return None
 
 
-def delete_resource(
+def delete_rule(
         client: Client,
-        resource_key: str
+        resource_key: str,
+        principal: str,
 ) -> None:
-    """Delete resource.
+    """Delete rule.
 
     Args:
         client (iam_lib.client.Client): IAM REST API client
         resource_key (str): unique identifier for the resource
+        principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
 
-     Returns:
+    Returns:
         None
 
     Raises:
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
-    route = f"/auth/v1/resource/{resource_key}"
+    route = f"/auth/v1/rule/{resource_key}/{principal}"
     client.response = client.delete(route=route)
     return None
 
 
-def read_resource(
+def read_rule(
         client: Client,
         resource_key: str,
-        descendents: bool = False
+        principal: str,
 ) -> str | dict:
-    """Read resource (optional tree).
+    """Read rule.
 
     Args:
         client (iam_lib.client.Client): IAM REST API client
         resource_key (str): unique identifier for the resource
-        descendents (bool): whether to include resource descendents
+        principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
 
-     Returns:
-        resource_tree (str | dict)
+    Returns:
+        rule (str | dict)
 
     Raises:
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
-    route = f"/auth/v1/resource/{resource_key}"
-    if descendents:
-        route += "?descendents"
+    route = f"/auth/v1/rule/{resource_key}/{principal}"
     client.response = client.get(route=route)
     return response_model.response_data(client)
 
 
-def read_resources(
+def read_principal_rules(
         client: Client,
-        principal: str
+        principal: str,
 ) -> str | dict:
-    """Read resources of principal.
+    """Read rules associated with principal.
 
     Args:
         client (iam_lib.client.Client): IAM REST API client
         principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
 
-     Returns:
-        resources (str | dict)
+    Returns:
+        rule (str | dict)
 
     Raises:
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
-    route = f"/auth/v1/resources/{principal}"
+    route = f"/auth/v1/rules/principal/{principal}"
+    client.response = client.get(route=route)
+    return response_model.response_data(client)
+
+
+def read_resource_rules(
+        client: Client,
+        resource_key: str,
+) -> str | dict:
+    """Read rules associated with a resource.
+
+    Args:
+        client (iam_lib.client.Client): IAM REST API client
+        resource_key (str): unique identifier for the resource
+
+    Returns:
+        rule (str | dict)
+
+    Raises:
+        iam_lib.exceptions.IAMRequestError: On HTTP request error
+        iam_lib.exceptions.IAMResponseError: On non-200 response
+        iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
+    """
+    route = f"/auth/v1/rules/resource_key/{resource_key}"
     client.response = client.get(route=route)
     return response_model.response_data(client)
