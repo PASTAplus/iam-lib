@@ -29,33 +29,79 @@ class Client:
 
     def __init__(
             self,
-            scheme: str, # protocol scheme (http or https)
-            host: str, # network host domain or address
-            public_key_path: str, # Path to public key
-            algorithm: str, # Token signing algorithm
+            scheme: str,  # Protocol scheme (http or https)
+            host: str,  # Network host domain or address
+            accept: str,  # Accept data type (JSON or XML)
+            public_key_path: str,  # Path to public key
+            algorithm: str,  # Token signing algorithm
+            token: str,  # IAM JWT authentication token
     ):
 
-        self.scheme = _validate_scheme(scheme)
-        self.host = _validate_host(host)
-        self.public_key = _validate_public_key(Path(public_key_path))
-        self.algorithm = algorithm
+        self._scheme = _validate_scheme(scheme)
+        self._host = _validate_host(host)
+        self._accept = _validate_acccept(accept)
+        self._public_key_path = _validate_public_key_path(public_key_path)
+        self._algorithm = algorithm
+        self._token = _validate_token(token, public_key_path, algorithm)
+        self._cookies = {"pasta_token": token}
 
-    def post(self, token: str, route: str, kwargs: dict, accept: str) -> Response:
+    @property
+    def scheme(self) -> str:
+        return self._scheme
+
+    @scheme.setter
+    def scheme(self, scheme: str):
+        self._scheme = _validate_scheme(scheme)
+
+    @property
+    def host(self) -> str:
+        return self._host
+
+    @host.setter
+    def host(self, host: str):
+        self._host = _validate_host(host)
+
+    @property
+    def accept(self) -> str:
+        return self._accept
+
+    @accept.setter
+    def accept(self, accept: str):
+        self._accept = _validate_accept(accept)
+
+    @property
+    def public_key_path(self) -> str:
+        return self._public_key_path
+
+    @public_key_path.setter
+    def public_key_path(self, public_key_path: str)
+        self._public_key_path = _validate_public_key_path(Path(public_key_path))
+
+    @property
+    def algorithm(self) -> str:
+        return self._algorithm
+
+    @algorithm.setter
+    def algorithm(self, algorithm: str):
+        self._algorithm = _validate_algorithm(algorithm)
+
+    def post(self, route: str, body: dict) -> Response:
         """Send a POST request to the IAM REST API
 
         Args:
-            token (str): IAM JWT token
             route (str): IAM route
-            kwargs (dict): IAM POST request key/value pairs
-            accept (str): IAM POST accept type (either JSON or XML)
+            body (dict): IAM POST request body
+
+        Returns:
+            response (Response): Generic response object
+    
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
          """
-        iam_lib.token.validate(token, self.public_key, self.algorithm)
-        _validate_route(route)
-        _validate_accept(accept)
-        cookies = {"pasta_token": token}
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.post(url, data=kwargs, cookies=cookies, headers={"Accept-Type": f"{accept}"})
+            request = requests.post(url, json=body, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         response = Response(request)
@@ -63,22 +109,24 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(response)
         return response
 
-    def put(self, token: str, route: str, kwargs: dict, accept: str) -> Response:
+    def put(self, route: str, body: dict) -> Response:
         """Send a PUT request to the IAM REST API
 
         Args:
-            token (str): IAM JWT token
             route (str): IAM route
-            kwargs (dict): IAM POST request key/value pairs
-            accept (str): IAM POST accept type (either JSON or XML)
+            body (dict): IAM POST request body
+
+        Returns:
+            response (Response): Generic response object
+    
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
          """
-        iam_lib.token.validate(token, self.public_key, self.algorithm)
-        _validate_route(route)
-        _validate_accept(accept)
         cookies = {"pasta_token": token}
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.put(url, data=kwargs, cookies=cookies, headers={"Accept-Type": f"{accept}"})
+            request = requests.put(url, json=body, cookies=cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         response = Response(request)
@@ -86,21 +134,22 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(response)
         return response
 
-    def get(self, token: str, route: str, accept: str) -> Response:
+    def get(self, route: str) -> Response:
         """Send a GET request to the IAM REST API
 
         Args:
-            token (str): IAM JWT token
             route (str): IAM route
-            accept (str): IAM POST accept type (either JSON or XML)
+
+        Returns:
+            response (Response): Generic response object
+    
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
          """
-        iam_lib.token.validate(token, self.public_key, self.algorithm)
-        _validate_route(route)
-        _validate_accept(accept)
-        cookies = {"pasta_token": token}
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.get(url, cookies=cookies, headers={"Accept-Type": f"{accept}"})
+            request = requests.get(url, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         response = Response(request)
@@ -108,21 +157,22 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(response)
         return response
 
-    def delete(self, token: str, route: str, accept: str) -> Response:
+    def delete(self, route: str) -> Response:
         """Send a DELETE request to the IAM REST API
 
         Args:
-            token (str): IAM JWT token
             route (str): IAM route
-            accept (str): IAM POST accept type (either JSON or XML)
+
+        Returns:
+            response (Response): Generic response object
+    
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
          """
-        iam_lib.token.validate(token, self.public_key, self.algorithm)
-        _validate_route(route)
-        _validate_accept(accept)
-        cookies = {"pasta_token": token}
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.delete(url, cookies=cookies, headers={"Accept-Type": f"{accept}"})
+            request = requests.delete(url, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         response = Response(request)
@@ -131,24 +181,23 @@ class Client:
         return response
 
 
-def _validate_public_key(public_key_path: Path) -> bytes:
-    if public_key_path.exists() and public_key_path.is_file():
-        return public_key_path.read_text().encode("utf-8")
+def _validate_token(token: str, public_key_path: str, algorithm: str) -> str:
+    public_key = Path(public_key_path).read_text().encode("utf-8")
+    try:
+        jwt.decode(token, public_key, algorithms=algorithm)
+    except jwt.InvalidTokenError as e:
+        raise iam_lib.exceptions.IAMInvalidToken(f"Invalid token: {e}")
+    return token
+
+
+def _validate_public_key_path(public_key_path: str) -> str:
+
+    if Path(public_key_path).exists() and Path(public_key_path).is_file():
+        return public_key_path
     else:
         msg = f"Public key file '{public_key_path}' does not exist"
         raise iam_lib.exceptions.IAMInvalidPublicKey(msg)
 
-
-def _validate_route(route: str) -> str:
-    valid_routes = (
-        "/auth/v1/ping",
-        "/auth/v1/eml",
-        "/auth/v1/access"
-    )
-    if route not in valid_routes:
-        msg = f"Invalid route: '{route}'"
-        raise iam_lib.exceptions.IAMInvalidRoute(msg)
-    return route
 
 def _validate_scheme(scheme: str) -> str:
     if scheme.lower() not in ("http", "https"):
@@ -172,12 +221,12 @@ def _validate_host(host: str) -> str:
 
 def _validate_accept(accept: str) -> str:
     if accept.lower() not in ("json", "xml"):
-        raise iam_lib.exceptions.IAMInvalidAccept(f"Invalid accept type '{accept}': must be 'json' or 'xml'")
+        raise iam_lib.exceptions.IAMInvalidAccept(f"Invalid accept type '{self._accept}': must be 'json' or 'xml'")
     return "application/" + accept.lower()
 
 
-def _validate_kwargs(kwargs: dict) -> dict:
-    valid_kwargs = (
+def body(body: dict) -> dict:
+    body = (
         "principal",            # EDI-ID (must begin with "edi-")
         "eml",                  # EML document (XML)
         "access",               # EML access element (XML)
@@ -189,8 +238,8 @@ def _validate_kwargs(kwargs: dict) -> dict:
         "permission",           # Resource permission (enumerated set: read, write, or changePermission)
         "token"                 # Base64 encoded JWT token of the client
     )
-    for key,value in kwargs.items():
-        if key not in valid_kwargs:
+    for key,value in body.items():
+        if key not in body:
             raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument '{key}'")
         if key == "descendants":
             if value not in ("True", "False"):
@@ -198,4 +247,4 @@ def _validate_kwargs(kwargs: dict) -> dict:
         if key == "permission":
             if value not in ("read", "write", "changePermission"):
                 raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument for 'permission': value '{value}' must be 'read', 'write', or 'changePermission'")
-    return kwargs
+    return body
