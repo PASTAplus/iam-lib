@@ -3,10 +3,10 @@
 
 """
 :Mod:
-    clients
+    eml
 
 :Synopsis:
-    IAM REST API client interfaces
+    IAM REST API eml client
 
 :Author:
     servilla
@@ -17,7 +17,7 @@
 import daiquiri
 
 from iam_lib.response import Response
-from iam_lib.rest_api import Client
+from iam_lib.client import Client
 
 
 logger = daiquiri.getLogger(__name__)
@@ -28,7 +28,7 @@ def add_eml(client: Client, accept: str, token: str, principal: str, eml: str) -
     document
 
     Args:
-        client (iam_lib.rest_api.Client): IAM REST API client
+        client (iam_lib.client.Client): IAM REST API client
         accept (str): Accept format (either JSON or XML)
         token (str): IAM JWT token
         principal (str): IAM principal owner (either EDI-ID or IdP identifier)

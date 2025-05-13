@@ -1,5 +1,5 @@
 """
-:Mod: rest_api
+:Mod: client
 
 :Synopsis:
     IAM REST API HTTP request client
