@@ -16,22 +16,24 @@
 """
 import daiquiri
 
-from iam_lib.response import Response
 from iam_lib.client import Client
 
 
 logger = daiquiri.getLogger(__name__)
 
 
-def add_eml(client: Client, principal: str, eml: str):
+def add_eml(
+        client: Client,
+        principal: str,
+        eml: str
+) -> None:
     """To parse a valid EML document and add its ACRs to the ACR registry for the resources identified in the EML
     document
 
     Args:
         client (iam_lib.client.Client): IAM REST API client
-        token (str): IAM JWT token
-        principal (str): IAM principal owner (either EDI-ID or IdP identifier)
-        eml (str): EML document
+        principal (str): IAM principal owner (either user profile EDI-ID or IdP identifier)
+        eml (str): valid EML document
 
     Returns:
         None
@@ -41,8 +43,9 @@ def add_eml(client: Client, principal: str, eml: str):
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
     route = "/auth/v1/eml"
-    body = {
+    parameters = {
         "principal": principal,
         "eml": eml,
     }
-    return client.post(route=route, body=body)
+    client.response = client.post(route=route, parameters=parameters)
+    return None

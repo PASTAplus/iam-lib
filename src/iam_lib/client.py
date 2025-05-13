@@ -44,6 +44,7 @@ class Client:
         self._algorithm = algorithm
         self._token = _validate_token(token, public_key_path, algorithm)
         self._cookies = {"pasta_token": token}
+        self._response = None
 
     @property
     def scheme(self) -> str:
@@ -92,6 +93,14 @@ class Client:
     @token.setter
     def token(self, token: str):
         self._token = _validate_token(token, self._public_key_path, self._algorithm)
+
+    @property
+    def response(self) -> Response:
+        return self._response
+
+    @response.setter
+    def response(self, response: Response):
+        self._response = response
 
     def post(self, route: str, parameters: dict) -> Response:
         """Send a POST request to the IAM REST API
