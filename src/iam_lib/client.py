@@ -12,10 +12,10 @@
 
 """
 from pathlib import Path
-from urllib.parse import urlparse
 
 import daiquiri
 import requests
+import jwt
 
 from iam_lib.response import Response
 import iam_lib.exceptions
@@ -39,7 +39,7 @@ class Client:
 
         self._scheme = _validate_scheme(scheme)
         self._host = _validate_host(host)
-        self._accept = _validate_acccept(accept)
+        self._accept = _validate_accept(accept)
         self._public_key_path = _validate_public_key_path(public_key_path)
         self._algorithm = algorithm
         self._token = _validate_token(token, public_key_path, algorithm)
@@ -74,8 +74,8 @@ class Client:
         return self._public_key_path
 
     @public_key_path.setter
-    def public_key_path(self, public_key_path: str)
-        self._public_key_path = _validate_public_key_path(Path(public_key_path))
+    def public_key_path(self, public_key_path: str):
+        self._public_key_path = _validate_public_key_path(public_key_path)
 
     @property
     def algorithm(self) -> str:
@@ -83,14 +83,22 @@ class Client:
 
     @algorithm.setter
     def algorithm(self, algorithm: str):
-        self._algorithm = _validate_algorithm(algorithm)
+        self._algorithm = algorithm
 
-    def post(self, route: str, body: dict) -> Response:
+    @property
+    def token(self) -> str:
+        return self._token
+
+    @token.setter
+    def token(self, token: str):
+        self._token = _validate_token(token, self._public_key_path, self._algorithm)
+
+    def post(self, route: str, parameters: dict) -> Response:
         """Send a POST request to the IAM REST API
 
         Args:
             route (str): IAM route
-            body (dict): IAM POST request body
+            parameters (dict): IAM POST request parameters
 
         Returns:
             response (Response): Generic response object
@@ -99,9 +107,10 @@ class Client:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
          """
+        _validate_parameters(parameters, self._public_key_path, self._algorithm)
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.post(url, json=body, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
+            request = requests.post(url, json=parameters, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         response = Response(request)
@@ -109,12 +118,12 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(response)
         return response
 
-    def put(self, route: str, body: dict) -> Response:
+    def put(self, route: str, parameters: dict) -> Response:
         """Send a PUT request to the IAM REST API
 
         Args:
             route (str): IAM route
-            body (dict): IAM POST request body
+            parameters (dict): IAM POST request parameters
 
         Returns:
             response (Response): Generic response object
@@ -123,10 +132,10 @@ class Client:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
          """
-        cookies = {"pasta_token": token}
+        _validate_parameters(parameters, self._public_key_path, self._algorithm)
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.put(url, json=body, cookies=cookies, headers={"Accept-Type": f"{self._accept}"})
+            request = requests.put(url, json=parameters, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         response = Response(request)
@@ -221,25 +230,25 @@ def _validate_host(host: str) -> str:
 
 def _validate_accept(accept: str) -> str:
     if accept.lower() not in ("json", "xml"):
-        raise iam_lib.exceptions.IAMInvalidAccept(f"Invalid accept type '{self._accept}': must be 'json' or 'xml'")
+        raise iam_lib.exceptions.IAMInvalidAccept(f"Invalid accept type '{accept}': must be 'json' or 'xml'")
     return "application/" + accept.lower()
 
 
-def body(body: dict) -> dict:
-    body = (
-        "principal",            # EDI-ID (must begin with "edi-")
-        "eml",                  # EML document (XML)
-        "access",               # EML access element (XML)
-        "resource_key",         # Resource key (unique identifier)
-        "resource_label",       # Resource label (non-unique)
-        "resource_type",        # Resource type (enumerated set: collection, package, eml, report, data, ezeml, ...)
+def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str) -> dict:
+    valid_parameters = (
+        "principal",  # EDI-ID (must begin with "edi-")
+        "eml",  # EML document (XML)
+        "access",  # EML access element (XML)
+        "resource_key",  # Resource key (unique identifier)
+        "resource_label",  # Resource label (non-unique)
+        "resource_type",  # Resource type (enumerated set: collection, package, eml, report, data, ezeml, ...)
         "parent_resource_key",  # Resource key of parent
-        "descendants",          # Boolean (True or False)
-        "permission",           # Resource permission (enumerated set: read, write, or changePermission)
-        "token"                 # Base64 encoded JWT token of the client
+        "descendants",  # Boolean (True or False)
+        "permission",  # Resource permission (enumerated set: read, write, or changePermission)
+        "token"  # Base64 encoded JWT token of the client
     )
-    for key,value in body.items():
-        if key not in body:
+    for key,value in valid_parameters.items():
+        if key not in parameters:
             raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument '{key}'")
         if key == "descendants":
             if value not in ("True", "False"):
@@ -247,4 +256,6 @@ def body(body: dict) -> dict:
         if key == "permission":
             if value not in ("read", "write", "changePermission"):
                 raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument for 'permission': value '{value}' must be 'read', 'write', or 'changePermission'")
-    return body
+        if key == "token":
+            _validate_token(value, public_key_path, algorithm)
+    return parameters

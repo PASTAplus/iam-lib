@@ -1,8 +1,8 @@
 """
-:Mod: test_rest_wrapper
+:Mod: test_client
 
 :Synopsis:
-    Pytest for rest_wrapper
+    Pytest for client
 
 :Author:
     Mark Servilla
@@ -26,11 +26,14 @@ from iam_lib.response import Response
 
 @pytest.fixture(scope="function")
 def client():
+    token = _make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
     return Client(
         scheme="HTTPS",
         host="localhost",
+        accept="JSON",
         public_key_path="./data/public_key.pem",
-        algorithm="ES256"
+        algorithm="ES256",
+        token=token
     )
 
 
@@ -53,7 +56,6 @@ def headers():
 
 
 def test_api_get(client, cookies, headers, mocker):
-    token = _make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
     mock_requests_response = MagicMock(
         status_code=200,
         reason="OK",
@@ -63,18 +65,17 @@ def test_api_get(client, cookies, headers, mocker):
     )
     mock_client_response = Response(mock_requests_response)
     mocker.patch.object(client, "get", return_value=mock_client_response)
-    response = client.get(token=token, route="/auth/v1/ping", accept="JSON")
+    response = client.get(route="/auth/v1/ping")
     assert response.status_code == 200
     assert response.body == '{"GET": "OK"}'
 
 
 def test_api_post(client):
-    token = _make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
-    kwargs = {
+    parameters = {
         "principal": "EDI-3fa734a7cd6e40998a5c2b5486b6eced",
         "eml": "<eml></eml>"
     }
-    response = client.post(token=token, route="/auth/v1/ping", kwargs=kwargs, accept="JSON")
+    response = client.post(route="/auth/v1/ping", parameters=parameters)
     assert response.status_code == 200
 
 
