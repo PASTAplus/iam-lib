@@ -53,5 +53,5 @@ def add_access(
         "resource_label": resource_label,
         "resource_type": resource_type,
     }
-    client.response = client.post(route=route, parameters=parameters)
+    client.post(route=route, parameters=parameters)
     return None

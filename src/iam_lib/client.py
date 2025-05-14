@@ -29,13 +29,30 @@ class Client:
 
     def __init__(
             self,
-            scheme: str,  # Protocol scheme (http or https)
-            host: str,  # Network host domain or address
-            accept: str,  # Accept data type (JSON or XML)
-            public_key_path: str,  # Path to public key
-            algorithm: str,  # Token signing algorithm
-            token: str,  # IAM JWT authentication token
+            scheme: str,
+            host: str,
+            accept: str,
+            public_key_path: str,
+            algorithm: str,
+            token: str,
     ):
+        """Initialize client instance
+
+        Args:
+            scheme (str): protocol scheme (http or https)
+            host (str):  host domain or address
+            accept (str): accept type (JSON or XML)
+            public_key_path (str): path to token signing public key
+            algorithm (str): token signing algorithm
+            token (str): IAM JWT authentication token
+
+        Raises:
+            iam_lib.exceptions.IAMInvalidScheme
+            iam_lib.exceptions.IAMInvalidHost
+            iam_lib.exceptions.IAMInvalidAccept
+            iam_lib.exceptions.IAMInvalidPublicKey
+            iam_lib.exceptions.IAMInvalidToken
+        """
 
         self._scheme = _validate_scheme(scheme)
         self._host = _validate_host(host)
@@ -98,10 +115,6 @@ class Client:
     def response(self) -> Response:
         return self._response
 
-    @response.setter
-    def response(self, response: Response):
-        self._response = response
-
     def post(self, route: str, parameters: dict) -> Response:
         """Send a POST request to the IAM REST API
 
@@ -122,10 +135,10 @@ class Client:
             request = requests.post(url, json=parameters, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
-        response = Response(request)
-        if response.status_code != 200:
-            raise iam_lib.exceptions.IAMResponseError(response)
-        return response
+        self._response = Response(request)
+        if self._response.status_code != 200:
+            raise iam_lib.exceptions.IAMResponseError(self._response)
+        return self._response
 
     def put(self, route: str, parameters: dict) -> Response:
         """Send a PUT request to the IAM REST API
@@ -147,10 +160,10 @@ class Client:
             request = requests.put(url, json=parameters, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
-        response = Response(request)
-        if response.status_code != 200:
-            raise iam_lib.exceptions.IAMResponseError(response)
-        return response
+        self._response = Response(request)
+        if self._response.status_code != 200:
+            raise iam_lib.exceptions.IAMResponseError(self._response)
+        return self._response
 
     def get(self, route: str) -> Response:
         """Send a GET request to the IAM REST API
@@ -170,10 +183,10 @@ class Client:
             request = requests.get(url, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
-        response = Response(request)
-        if response.status_code != 200:
-            raise iam_lib.exceptions.IAMResponseError(response)
-        return response
+        self._response = Response(request)
+        if self._response.status_code != 200:
+            raise iam_lib.exceptions.IAMResponseError(self._response)
+        return self._response
 
     def delete(self, route: str) -> Response:
         """Send a DELETE request to the IAM REST API
@@ -193,10 +206,10 @@ class Client:
             request = requests.delete(url, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
-        response = Response(request)
-        if response.status_code != 200:
-            raise iam_lib.exceptions.IAMResponseError(response)
-        return response
+        self._response = Response(request)
+        if self._response.status_code != 200:
+            raise iam_lib.exceptions.IAMResponseError(self._response)
+        return self._response
 
 
 def _validate_token(token: str, public_key_path: str, algorithm: str) -> str:

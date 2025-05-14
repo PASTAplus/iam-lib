@@ -46,7 +46,8 @@ def is_authorized(
         "permission": permission
     }
     try:
-        client.response = client.post(route=route, parameters=parameters)
+        client.post(route=route, parameters=parameters)
         return True
     except (IAMRequestError, IAMResponseError) as e:
+        logger.error(e)
         return False

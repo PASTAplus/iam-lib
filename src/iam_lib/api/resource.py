@@ -53,7 +53,7 @@ def create_resource(
         "resource_type": resource_type,
         "parent_resource_key": parent_resource_key
     }
-    client.response = client.post(route=route, parameters=parameters)
+    client.post(route=route, parameters=parameters)
     return None
 
 
@@ -86,7 +86,7 @@ def update_resource(
         "resource_type": resource_type,
         "parent_resource_key": parent_resource_key
     }
-    client.response = client.put(route=route, parameters=parameters)
+    client.put(route=route, parameters=parameters)
     return None
 
 
@@ -108,7 +108,7 @@ def delete_resource(
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
     route = f"/auth/v1/resource/{resource_key}"
-    client.response = client.delete(route=route)
+    client.delete(route=route)
     return None
 
 
@@ -135,7 +135,7 @@ def read_resource(
     route = f"/auth/v1/resource/{resource_key}"
     if descendents:
         route += "?descendents"
-    client.response = client.get(route=route)
+    client.get(route=route)
     return response_model.response_data(client)
 
 
@@ -158,5 +158,5 @@ def read_resources(
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
     route = f"/auth/v1/resources/{principal}"
-    client.response = client.get(route=route)
+    client.get(route=route)
     return response_model.response_data(client)

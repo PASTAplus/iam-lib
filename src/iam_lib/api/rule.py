@@ -50,7 +50,7 @@ def create_rule(
         "principal": principal,
         "permission": permission,
     }
-    client.response = client.post(route=route, parameters=parameters)
+    client.post(route=route, parameters=parameters)
     return None
 
 
@@ -79,7 +79,7 @@ def update_rule(
     parameters = {
         "permission": permission
     }
-    client.response = client.put(route=route, parameters=parameters)
+    client.put(route=route, parameters=parameters)
     return None
 
 
@@ -103,7 +103,7 @@ def delete_rule(
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
     route = f"/auth/v1/rule/{resource_key}/{principal}"
-    client.response = client.delete(route=route)
+    client.delete(route=route)
     return None
 
 
@@ -128,7 +128,7 @@ def read_rule(
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
     route = f"/auth/v1/rule/{resource_key}/{principal}"
-    client.response = client.get(route=route)
+    client.get(route=route)
     return response_model.response_data(client)
 
 
@@ -151,7 +151,7 @@ def read_principal_rules(
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
     route = f"/auth/v1/rules/principal/{principal}"
-    client.response = client.get(route=route)
+    client.get(route=route)
     return response_model.response_data(client)
 
 
@@ -174,5 +174,5 @@ def read_resource_rules(
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
     route = f"/auth/v1/rules/resource_key/{resource_key}"
-    client.response = client.get(route=route)
+    client.get(route=route)
     return response_model.response_data(client)

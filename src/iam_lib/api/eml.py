@@ -47,5 +47,5 @@ def add_eml(
         "principal": principal,
         "eml": eml,
     }
-    client.response = client.post(route=route, parameters=parameters)
+    client.post(route=route, parameters=parameters)
     return None
