@@ -25,6 +25,7 @@ logger = daiquiri.getLogger(__name__)
 
 def create_resource(
         client: Client,
+        principal: str,
         resource_key: str,
         resource_label: str,
         resource_type: str,
@@ -34,6 +35,7 @@ def create_resource(
 
     Args:
         client (iam_lib.client.Client): IAM REST API client
+        principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
         resource_key (str): unique identifier for the resource
         resource_label (str): human interpretable label of the resource
         resource_type (str): type of resource
@@ -48,6 +50,7 @@ def create_resource(
     """
     route = "/auth/v1/resource"
     parameters = {
+        "principal": principal,
         "resource_key": resource_key,
         "resource_label": resource_label,
         "resource_type": resource_type,
