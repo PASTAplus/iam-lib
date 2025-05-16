@@ -118,14 +118,18 @@ def delete_resource(
 def read_resource(
         client: Client,
         resource_key: str,
-        descendents: bool = False
+        descendants: bool = False,
+        ancestors: bool = False,
+        all: bool = False
 ) -> str | dict:
     """Read resource (optional tree).
 
     Args:
         client (iam_lib.client.Client): IAM REST API client
         resource_key (str): unique identifier for the resource
-        descendents (bool): whether to include resource descendents
+        descendants (bool): include resource descendants (optional)
+        ancestors (bool): include resource ancestors (optional)
+        all (bool): include all resources (optional)
 
      Returns:
         resource_tree (str | dict)
@@ -136,8 +140,21 @@ def read_resource(
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
     route = f"auth/v1/resource/{resource_key}"
-    if descendents:
-        route += "?descendents"
+    trailing = False
+    if descendants or ancestors or all:
+        route += "?"
+    if descendants:
+        route += "descendants"
+        trailing = True
+    if ancestors and trailing:
+        route += "&ancestors"
+    elif ancestors:
+        route += "ancestors"
+        trailing = True
+    if all and trailing:
+        route += "&all"
+    elif all:
+        route += "all"
     client.get(route=route)
     return response_model.response_data(client)
 
