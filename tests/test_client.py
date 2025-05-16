@@ -11,47 +11,17 @@
     2025-05-05
 
 """
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import MagicMock
 
+import daiquiri
 import jwt
-import pytest
 import requests
-from requests.cookies import RequestsCookieJar  # For mocking
-from requests.structures import CaseInsensitiveDict  # For mocking
 
-from iam_lib.client import Client
-from utilities import make_token
-
-@pytest.fixture(scope="function")
-def client():
-    return Client(
-        scheme="HTTPS",
-        host="localhost",
-        accept="JSON",
-        public_key_path="./data/public_key.pem",
-        algorithm="ES256",
-        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
-    )
+from fixtures import client, cookies, headers
 
 
-@pytest.fixture(scope="function")
-def cookies():
-    cookies = RequestsCookieJar()
-    cookies.set(
-        name="pasta_token",
-        value=f"{make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))}",
-        domain="edirepository.org"
-    )
-    return cookies
-
-
-@pytest.fixture(scope="function")
-def headers():
-    headers = CaseInsensitiveDict()
-    headers["Content-Type"] = "application/json"
-    return headers
+logger = daiquiri.getLogger(__name__)
 
 
 def test_client(client):
@@ -72,12 +42,12 @@ def test_get(client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text='{"GET": "OK"}'
+        text="{'GET': 'OK'}"
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
     response = client.get(route="auth/v1/ping")
     assert response.status_code == 200
-    assert response.body == '{"GET": "OK"}'
+    assert response.body == "{'GET': 'OK'}"
 
 
 def test_post(client, cookies, headers, mocker):
@@ -86,7 +56,7 @@ def test_post(client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text='{"POST": "OK"}'
+        text="{'POST': 'OK'}"
     )
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
     parameters = {
@@ -95,7 +65,7 @@ def test_post(client, cookies, headers, mocker):
     }
     response = client.post(route="auth/v1/ping", parameters=parameters)
     assert response.status_code == 200
-    assert response.body == '{"POST": "OK"}'
+    assert response.body == "{'POST': 'OK'}"
 
 
 def test_put(client, cookies, headers, mocker):
@@ -104,7 +74,7 @@ def test_put(client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text='{"PUT": "OK"}'
+        text="{'PUT': 'OK'}"
     )
     mocker.patch.object(requests, "put", return_value=mock_requests_response)
     parameters = {
@@ -113,7 +83,7 @@ def test_put(client, cookies, headers, mocker):
     }
     response = client.put(route="auth/v1/ping", parameters=parameters)
     assert response.status_code == 200
-    assert response.body == '{"PUT": "OK"}'
+    assert response.body == "{'PUT': 'OK'}"
 
 
 def test_delete(client, cookies, headers, mocker):
@@ -122,9 +92,9 @@ def test_delete(client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text='{"DELETE": "OK"}'
+        text="{'DELETE': 'OK'}"
     )
     mocker.patch.object(requests, "delete", return_value=mock_requests_response)
     response = client.delete(route="auth/v1/ping")
     assert response.status_code == 200
-    assert response.body == '{"DELETE": "OK"}'
+    assert response.body == "{'DELETE': 'OK'}"
