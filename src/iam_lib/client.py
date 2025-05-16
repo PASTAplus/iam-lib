@@ -269,8 +269,8 @@ def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str)
         "permission",  # Resource permission (enumerated set: read, write, or changePermission)
         "token"  # Base64 encoded JWT token of the client
     )
-    for key,value in valid_parameters.items():
-        if key not in parameters:
+    for key,value in parameters.items():
+        if key not in valid_parameters:
             raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument '{key}'")
         if key == "descendants":
             if value not in ("True", "False"):
