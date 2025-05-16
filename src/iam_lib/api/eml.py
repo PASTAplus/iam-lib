@@ -42,7 +42,7 @@ def add_eml(
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
-    route = "/auth/v1/eml"
+    route = "auth/v1/eml"
     parameters = {
         "principal": principal,
         "eml": eml,

@@ -44,7 +44,7 @@ def create_rule(
         iam_lib.exceptions.IAMResponseError: On non-200 response
 
     """
-    route = "/auth/v1/rule"
+    route = "auth/v1/rule"
     parameters = {
         "resource_key": resource_key,
         "principal": principal,
@@ -75,7 +75,7 @@ def update_rule(
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
-    route = f"/auth/v1/rule/{resource_key}/{principal}"
+    route = f"auth/v1/rule/{resource_key}/{principal}"
     parameters = {
         "permission": permission
     }
@@ -102,7 +102,7 @@ def delete_rule(
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
-    route = f"/auth/v1/rule/{resource_key}/{principal}"
+    route = f"auth/v1/rule/{resource_key}/{principal}"
     client.delete(route=route)
     return None
 
@@ -127,7 +127,7 @@ def read_rule(
         iam_lib.exceptions.IAMResponseError: On non-200 response
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
-    route = f"/auth/v1/rule/{resource_key}/{principal}"
+    route = f"auth/v1/rule/{resource_key}/{principal}"
     client.get(route=route)
     return response_model.response_data(client)
 
@@ -150,7 +150,7 @@ def read_principal_rules(
         iam_lib.exceptions.IAMResponseError: On non-200 response
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
-    route = f"/auth/v1/rules/principal/{principal}"
+    route = f"auth/v1/rules/principal/{principal}"
     client.get(route=route)
     return response_model.response_data(client)
 
@@ -173,6 +173,6 @@ def read_resource_rules(
         iam_lib.exceptions.IAMResponseError: On non-200 response
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
-    route = f"/auth/v1/rules/resource_key/{resource_key}"
+    route = f"auth/v1/rules/resource_key/{resource_key}"
     client.get(route=route)
     return response_model.response_data(client)

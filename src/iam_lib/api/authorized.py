@@ -39,7 +39,7 @@ def is_authorized(
     Returns:
         Boolean: True if the principal is authorized to access the resource
     """
-    route = "/auth/v1/authorized"
+    route = "auth/v1/authorized"
     parameters = {
         "token": token,
         "resource_key": resource_key,

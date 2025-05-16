@@ -48,7 +48,7 @@ def create_resource(
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
-    route = "/auth/v1/resource"
+    route = "auth/v1/resource"
     parameters = {
         "principal": principal,
         "resource_key": resource_key,
@@ -83,7 +83,7 @@ def update_resource(
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
-    route = f"/auth/v1/resource/{resource_key}"
+    route = f"auth/v1/resource/{resource_key}"
     parameters = {
         "resource_label": resource_label,
         "resource_type": resource_type,
@@ -110,7 +110,7 @@ def delete_resource(
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
-    route = f"/auth/v1/resource/{resource_key}"
+    route = f"auth/v1/resource/{resource_key}"
     client.delete(route=route)
     return None
 
@@ -135,7 +135,7 @@ def read_resource(
         iam_lib.exceptions.IAMResponseError: On non-200 response
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
-    route = f"/auth/v1/resource/{resource_key}"
+    route = f"auth/v1/resource/{resource_key}"
     if descendents:
         route += "?descendents"
     client.get(route=route)
@@ -160,6 +160,6 @@ def read_resources(
         iam_lib.exceptions.IAMResponseError: On non-200 response
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
-    route = f"/auth/v1/resources/{principal}"
+    route = f"auth/v1/resources/{principal}"
     client.get(route=route)
     return response_model.response_data(client)

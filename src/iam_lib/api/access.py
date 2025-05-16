@@ -46,7 +46,7 @@ def add_access(
         iam_lib.exceptions.IAMRequestError: On HTTP request error
         iam_lib.exceptions.IAMResponseError: On non-200 response
     """
-    route = "/auth/v1/access"
+    route = "auth/v1/access"
     parameters = {
         "access": access,
         "resource_key": resource_key,
