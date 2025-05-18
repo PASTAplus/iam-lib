@@ -95,9 +95,28 @@ def test_read_resource(client, cookies, headers, mocker):
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
     iam_resource.read_resource(
         client=client,
-        resource_key="resource_xyz"
+        resource_key="resource_xyz",
+        ancestors=True,
+        all=True
     )
     assert client.response.status_code == 200
     assert client.response.body == "{'READ_RESOURCE': 'OK'}"
+
+
+def test_read_resources(client, cookies, headers, mocker):
+    mock_requests_response = MagicMock(
+        status_code=200,
+        reason="OK",
+        headers=headers,
+        cookies=cookies,
+        text="{'READ_RESOURCES': 'OK'}"
+    )
+    mocker.patch.object(requests, "get", return_value=mock_requests_response)
+    iam_resource.read_resources(
+        client=client,
+        principal = "EDI-3fa734a7cd6e40998a5c2b5486b6eced"
+    )
+    assert client.response.status_code == 200
+    assert client.response.body == "{'READ_RESOURCES': 'OK'}"
 
 

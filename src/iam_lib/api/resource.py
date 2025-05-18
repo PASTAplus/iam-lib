@@ -140,21 +140,12 @@ def read_resource(
         iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
     """
     route = f"auth/v1/resource/{resource_key}"
-    trailing = False
     if descendants or ancestors or all:
-        route += "?"
-    if descendants:
-        route += "descendants"
-        trailing = True
-    if ancestors and trailing:
-        route += "&ancestors"
-    elif ancestors:
-        route += "ancestors"
-        trailing = True
-    if all and trailing:
-        route += "&all"
-    elif all:
-        route += "all"
+        q_parameters = []
+        if descendants: q_parameters.append("descendants")
+        if ancestors: q_parameters.append("ancestors")
+        if all: q_parameters.append("all")
+        route += "?" + "&".join(q_parameters)
     client.get(route=route)
     return response_model.response_data(client)
 

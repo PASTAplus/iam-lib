@@ -14,6 +14,9 @@
 :Created:
     5/13/25
 """
+import urllib.parse
+from urllib.parse import urlencode, quote
+
 import daiquiri
 
 from iam_lib.client import Client
@@ -38,16 +41,20 @@ def is_authorized(
 
     Returns:
         Boolean: True if the principal is authorized to access the resource
+
+    Raises:
+        iam_lib.exceptions.IAMRequestError: On HTTP request error
     """
-    route = "auth/v1/authorized"
-    parameters = {
+    q_parameters = {
         "token": token,
         "resource_key": resource_key,
-        "permission": permission
+        "permission": permission,
     }
+    route = f"auth/v1/authorized?{urlencode(q_parameters, quote_via=quote)}"
     try:
-        client.post(route=route, parameters=parameters)
+        client.get(route=route)
         return True
-    except (IAMRequestError, IAMResponseError) as e:
+    except IAMResponseError as e:
         logger.error(e)
         return False
+
