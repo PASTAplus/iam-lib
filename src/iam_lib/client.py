@@ -21,6 +21,7 @@ from iam_lib.response import Response
 import iam_lib.exceptions
 import iam_lib.token
 
+
 logger = daiquiri.getLogger(__name__)
 
 
