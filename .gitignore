@@ -1,3 +1,8 @@
+# Project ignores
+config.py
+*.pem
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -182,6 +187,3 @@ cython_debug/
 
 # JetBrains
 .idea
-
-config.py
-*.pem
