@@ -22,30 +22,43 @@ from iam_lib.client import Client
 logger = daiquiri.getLogger(__name__)
 
 
-def add_eml(
-        client: Client,
-        principal: str,
-        eml: str
-) -> None:
-    """To parse a valid EML document and add its ACRs to the ACR registry for the resources identified in the EML
-    document
+class EMLClient(Client):
+    """IAM EML client class"""
 
-    Args:
-        client (iam_lib.client.Client): IAM REST API client
-        principal (str): IAM principal owner (user profile EDI-ID or IdP identifier)
-        eml (str): valid EML document
+    def __init__(
+            self,
+            scheme: str,
+            host: str,
+            accept: str,
+            public_key_path: str,
+            algorithm: str,
+            token: str,
+    ):
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token)
 
-    Returns:
-        None
+    def add_eml(
+            self,
+            principal: str,
+            eml: str
+    ) -> None:
+        """To parse a valid EML document and add its ACRs to the ACR registry for the resources identified in the EML
+        document
 
-    Raises:
-        iam_lib.exceptions.IAMRequestError: On HTTP request error
-        iam_lib.exceptions.IAMResponseError: On non-200 response
-    """
-    route = "auth/v1/eml"
-    parameters = {
-        "principal": principal,
-        "eml": eml,
-    }
-    client.post(route=route, parameters=parameters)
-    return None
+        Args:
+            principal (str): IAM principal owner (user profile EDI-ID or IdP identifier)
+            eml (str): valid EML document
+
+        Returns:
+            None
+
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
+        """
+        route = "auth/v1/eml"
+        parameters = {
+            "principal": principal,
+            "eml": eml,
+        }
+        self.post(route=route, parameters=parameters)
+        return None
