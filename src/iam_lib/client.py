@@ -116,24 +116,29 @@ class Client:
     def response(self) -> Response:
         return self._response
 
-    def post(self, route: str, parameters: dict) -> Response:
+    def post(self, route: str, form_params: dict) -> Response:
         """Send a POST request to the IAM REST API
 
         Args:
             route (str): IAM route
-            parameters (dict): IAM POST request parameters
+            form_params (dict): IAM POST form parameters
 
         Returns:
-            response (Response): Generic response object
+            response (Response): IAM response object
     
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
          """
-        _validate_parameters(parameters, self._public_key_path, self._algorithm)
+        _validate_parameters(form_params, self._public_key_path, self._algorithm)
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.post(url, json=parameters, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
+            request = requests.post(
+                url,
+                json=form_params,
+                cookies=self._cookies,
+                headers={"Accept-Type": f"{self._accept}"}
+            )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         self._response = Response(request)
@@ -141,24 +146,29 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
-    def put(self, route: str, parameters: dict) -> Response:
+    def put(self, route: str, form_params: dict) -> Response:
         """Send a PUT request to the IAM REST API
 
         Args:
             route (str): IAM route
-            parameters (dict): IAM POST request parameters
+            form_params (dict): IAM POST form parameters
 
         Returns:
-            response (Response): Generic response object
+            response (Response): IAM response object
     
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
          """
-        _validate_parameters(parameters, self._public_key_path, self._algorithm)
+        _validate_parameters(form_params, self._public_key_path, self._algorithm)
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.put(url, json=parameters, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
+            request = requests.put(
+                url,
+                json=form_params,
+                cookies=self._cookies,
+                headers={"Accept-Type": f"{self._accept}"}
+            )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         self._response = Response(request)
@@ -166,14 +176,15 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
-    def get(self, route: str) -> Response:
+    def get(self, route: str, query_params: dict) -> Response:
         """Send a GET request to the IAM REST API
 
         Args:
+            query_params (dict): IAM GET query parameters
             route (str): IAM route
 
         Returns:
-            response (Response): Generic response object
+            response (Response): IAM response object
     
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
@@ -181,7 +192,12 @@ class Client:
          """
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.get(url, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
+            request = requests.get(
+                url,
+                params=query_params,
+                cookies=self._cookies,
+                headers={"Accept-Type": f"{self._accept}"}
+            )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         self._response = Response(request)
@@ -273,12 +289,14 @@ def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str)
     for key,value in parameters.items():
         if key not in valid_parameters:
             raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument '{key}'")
-        if key == "descendants":
+        if key in ("ancestors", "descendants", "all"):
             if value not in ("True", "False"):
-                raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument for 'descendants': value '{value}' must be True or False")
+                msg = f"Invalid keyword argument for '{key}': value '{value}' must be True or False"
+                raise iam_lib.exceptions.IAMInvalidParameter(msg)
         if key == "permission":
             if value not in ("read", "write", "changePermission"):
-                raise iam_lib.exceptions.IAMInvalidParameter(f"Invalid keyword argument for 'permission': value '{value}' must be 'read', 'write', or 'changePermission'")
+                msg = f"Invalid keyword argument for 'permission': value '{value}' must be 'read', 'write', or 'changePermission'"
+                raise iam_lib.exceptions.IAMInvalidParameter(msg)
         if key == "token":
             _validate_token(value, public_key_path, algorithm)
     return parameters
