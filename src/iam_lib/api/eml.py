@@ -60,5 +60,5 @@ class EMLClient(Client):
             "principal": principal,
             "eml": eml,
         }
-        self.post(route=route, parameters=parameters)
+        self.post(route=route, form_params=parameters)
         return None

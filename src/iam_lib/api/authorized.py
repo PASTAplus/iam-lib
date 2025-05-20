@@ -14,47 +14,59 @@
 :Created:
     5/13/25
 """
-import urllib.parse
 from urllib.parse import urlencode, quote
 
 import daiquiri
 
 from iam_lib.client import Client
-from iam_lib.exceptions import IAMRequestError, IAMResponseError
+from iam_lib.exceptions import IAMResponseError
 
 logger = daiquiri.getLogger(__name__)
 
 
-def is_authorized(
-        client: Client,
-        token: str,
-        resource_key: str,
-        permission: str
-) -> bool:
-    """Test if principal is authorized to access the resource at the given permission
+class AuthorizedClient(Client):
+    """IAM Authorized client class"""
 
-    Args:
-        client (iam_lib.client.Client): IAM REST API client
-        token (str): IAM user JWT token
-        resource_key (str): unique identifier for the resource
-        permission (str): IAM permission (read, write, or changePermission)
+    def __init__(
+            self,
+            scheme: str,
+            host: str,
+            accept: str,
+            public_key_path: str,
+            algorithm: str,
+            token: str,
+    ):
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token)
 
-    Returns:
-        Boolean: True if the principal is authorized to access the resource
+    def is_authorized(
+            self,
+            token: str,
+            resource_key: str,
+            permission: str
+    ) -> bool:
+        """Test if principal is authorized to access the resource at the given permission
 
-    Raises:
-        iam_lib.exceptions.IAMRequestError: On HTTP request error
-    """
-    q_parameters = {
-        "token": token,
-        "resource_key": resource_key,
-        "permission": permission,
-    }
-    route = f"auth/v1/authorized?{urlencode(q_parameters, quote_via=quote)}"
-    try:
-        client.get(route=route)
-        return True
-    except IAMResponseError as e:
-        logger.error(e)
-        return False
+        Args:
+            token (str): IAM token
+            resource_key (str): unique identifier for the resource
+            permission (str): IAM permission (read, write, or changePermission)
+
+        Returns:
+            Boolean: True if the principal is authorized to access the resource
+
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+        """
+        query_params = {
+            "token": token,
+            "resource_key": resource_key,
+            "permission": permission,
+        }
+        route = f"auth/v1/authorized"
+        try:
+            self.get(route=route, query_params=query_params)
+            return True
+        except IAMResponseError as e:
+            logger.error(e)
+            return False
 

@@ -23,151 +23,160 @@ import iam_lib.models.response_model as response_model
 logger = daiquiri.getLogger(__name__)
 
 
-def create_resource(
-        client: Client,
-        principal: str,
-        resource_key: str,
-        resource_label: str,
-        resource_type: str,
-        parent_resource_key: str = None
-) -> None:
-    """Create resource.
+class ResourceClient(Client):
+    """IAM Resource client class"""
 
-    Args:
-        client (iam_lib.client.Client): IAM REST API client
-        principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
-        resource_key (str): unique identifier for the resource
-        resource_label (str): human interpretable label of the resource
-        resource_type (str): type of resource
-        parent_resource_key (str): unique identifier for the parent resource if exists; otherwise None
+    def __init__(
+            self,
+            scheme: str,
+            host: str,
+            accept: str,
+            public_key_path: str,
+            algorithm: str,
+            token: str,
+    ):
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token)
 
-    Returns:
-        None
+    def create_resource(
+            self,
+            principal: str,
+            resource_key: str,
+            resource_label: str,
+            resource_type: str,
+            parent_resource_key: str = None
+    ) -> None:
+        """Create resource.
 
-    Raises:
-        iam_lib.exceptions.IAMRequestError: On HTTP request error
-        iam_lib.exceptions.IAMResponseError: On non-200 response
-    """
-    route = "auth/v1/resource"
-    parameters = {
-        "principal": principal,
-        "resource_key": resource_key,
-        "resource_label": resource_label,
-        "resource_type": resource_type,
-        "parent_resource_key": parent_resource_key
-    }
-    client.post(route=route, parameters=parameters)
-    return None
+        Args:
+            principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
+            resource_key (str): unique identifier for the resource
+            resource_label (str): human interpretable label of the resource
+            resource_type (str): type of resource
+            parent_resource_key (str): unique identifier for the parent resource if exists; otherwise None
 
+        Returns:
+            None
 
-def update_resource(
-        client: Client,
-        resource_key: str,
-        resource_label: str,
-        resource_type: str,
-        parent_resource_key: str = None
-) -> None:
-    """Update resource.
-
-    Args:
-        client (iam_lib.client.Client): IAM REST API client
-        resource_key (str): unique identifier for the resource
-        resource_label (str): human interpretable label of the resource
-        resource_type (str): type of resource
-        parent_resource_key (str): unique identifier for the parent resource if exists; otherwise None
-
-    Returns:
-        None
-
-    Raises:
-        iam_lib.exceptions.IAMRequestError: On HTTP request error
-        iam_lib.exceptions.IAMResponseError: On non-200 response
-    """
-    route = f"auth/v1/resource/{resource_key}"
-    parameters = {
-        "resource_label": resource_label,
-        "resource_type": resource_type,
-        "parent_resource_key": parent_resource_key
-    }
-    client.put(route=route, parameters=parameters)
-    return None
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
+        """
+        route = "auth/v1/resource"
+        form_params = {
+            "principal": principal,
+            "resource_key": resource_key,
+            "resource_label": resource_label,
+            "resource_type": resource_type,
+            "parent_resource_key": parent_resource_key
+        }
+        self.post(route=route, form_params=form_params)
+        return None
 
 
-def delete_resource(
-        client: Client,
-        resource_key: str
-) -> None:
-    """Delete resource.
+    def update_resource(
+            self,
+            resource_key: str,
+            resource_label: str,
+            resource_type: str,
+            parent_resource_key: str = None
+    ) -> None:
+        """Update resource.
 
-    Args:
-        client (iam_lib.client.Client): IAM REST API client
-        resource_key (str): unique identifier for the resource
+        Args:
+            resource_key (str): unique identifier for the resource
+            resource_label (str): human interpretable label of the resource
+            resource_type (str): type of resource
+            parent_resource_key (str): unique identifier for the parent resource if exists; otherwise None
 
-     Returns:
-        None
+        Returns:
+            None
 
-    Raises:
-        iam_lib.exceptions.IAMRequestError: On HTTP request error
-        iam_lib.exceptions.IAMResponseError: On non-200 response
-    """
-    route = f"auth/v1/resource/{resource_key}"
-    client.delete(route=route)
-    return None
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
+        """
+        route = f"auth/v1/resource/{resource_key}"
+        form_params = {
+            "resource_label": resource_label,
+            "resource_type": resource_type,
+            "parent_resource_key": parent_resource_key
+        }
+        self.put(route=route, form_params=form_params)
+        return None
 
+    def delete_resource(
+            self,
+            resource_key: str
+    ) -> None:
+        """Delete resource.
 
-def read_resource(
-        client: Client,
-        resource_key: str,
-        descendants: bool = False,
-        ancestors: bool = False,
-        all: bool = False
-) -> str | dict:
-    """Read resource (optional tree).
+        Args:
+            client (iam_lib.client.Client): IAM REST API client
+            resource_key (str): unique identifier for the resource
 
-    Args:
-        client (iam_lib.client.Client): IAM REST API client
-        resource_key (str): unique identifier for the resource
-        descendants (bool): include resource descendants (optional)
-        ancestors (bool): include resource ancestors (optional)
-        all (bool): include all resources (optional)
+         Returns:
+            None
 
-     Returns:
-        resource_tree (str | dict)
-
-    Raises:
-        iam_lib.exceptions.IAMRequestError: On HTTP request error
-        iam_lib.exceptions.IAMResponseError: On non-200 response
-        iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
-    """
-    route = f"auth/v1/resource/{resource_key}"
-    if descendants or ancestors or all:
-        q_parameters = []
-        if descendants: q_parameters.append("descendants")
-        if ancestors: q_parameters.append("ancestors")
-        if all: q_parameters.append("all")
-        route += "?" + "&".join(q_parameters)
-    client.get(route=route)
-    return response_model.response_data(client)
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
+        """
+        route = f"auth/v1/resource/{resource_key}"
+        self.delete(route=route)
+        return None
 
 
-def read_resources(
-        client: Client,
-        principal: str
-) -> str | dict:
-    """Read resources of principal.
+    def read_resource(
+            self,
+            resource_key: str,
+            descendants: bool = False,
+            ancestors: bool = False,
+            all: bool = False
+    ) -> str | dict:
+        """Read resource (optional tree).
 
-    Args:
-        client (iam_lib.client.Client): IAM REST API client
-        principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
+        Args:
+            resource_key (str): unique identifier for the resource
+            descendants (bool): include resource descendants (optional)
+            ancestors (bool): include resource ancestors (optional)
+            all (bool): include all resources (optional)
 
-     Returns:
-        resources (str | dict)
+         Returns:
+            resource_tree (str | dict)
 
-    Raises:
-        iam_lib.exceptions.IAMRequestError: On HTTP request error
-        iam_lib.exceptions.IAMResponseError: On non-200 response
-        iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
-    """
-    route = f"auth/v1/resources/{principal}"
-    client.get(route=route)
-    return response_model.response_data(client)
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
+        """
+        route = f"auth/v1/resource/{resource_key}"
+        query_params = {}
+        if descendants or ancestors or all:
+            if descendants: query_params["descendants"] = None
+            if ancestors: query_params["ancestors"] = None
+            if all: query_params["all"] = None
+        self.get(route=route, query_params=query_params)
+        return response_model.response_data(self)
+
+
+    def read_resources(
+            self,
+            principal: str
+    ) -> str | dict:
+        """Read resources of principal.
+
+        Args:
+            client (iam_lib.client.Client): IAM REST API client
+            principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
+
+         Returns:
+            resources (str | dict)
+
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
+        """
+        route = f"auth/v1/resources/{principal}"
+        self.get(route=route)
+        return response_model.response_data(self)
