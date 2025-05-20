@@ -176,11 +176,11 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
-    def get(self, route: str, query_params: dict) -> Response:
+    def get(self, route: str, query_params=None) -> Response:
         """Send a GET request to the IAM REST API
 
         Args:
-            query_params (dict): IAM GET query parameters
+            query_params (dict): IAM GET query parameters (optional)
             route (str): IAM route
 
         Returns:
@@ -190,6 +190,8 @@ class Client:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
          """
+        if query_params is None:
+            query_params = {}
         url = self.scheme + "://" + self.host + "/" + route
         try:
             request = requests.get(
