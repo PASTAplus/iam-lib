@@ -19,15 +19,13 @@ from unittest.mock import MagicMock
 import daiquiri
 import requests
 
-import iam_lib.api.access as iam_access
-
-from fixtures import client, cookies, headers
+from fixtures import access_client, cookies, headers
 
 
 logger = daiquiri.getLogger(__name__)
 
 
-def test_add_access(client, cookies, headers, mocker):
+def test_add_access(access_client, cookies, headers, mocker):
     mock_requests_response = MagicMock(
         status_code=200,
         reason="OK",
@@ -36,12 +34,11 @@ def test_add_access(client, cookies, headers, mocker):
         text="{'ADD_ACCESS': 'OK'}"
     )
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
-    iam_access.add_access(
-        client=client,
+    access_client.add_access(
         access="<access></access>",
         resource_key="api_service_xyz",
         resource_label="xyz",
         resource_type="service"
     )
-    assert client.response.status_code == 200
-    assert client.response.body == "{'ADD_ACCESS': 'OK'}"
+    assert access_client.response.status_code == 200
+    assert access_client.response.body == "{'ADD_ACCESS': 'OK'}"

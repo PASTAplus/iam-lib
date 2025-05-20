@@ -21,7 +21,7 @@ import requests
 
 from fixtures import (
     cookies,
-    emlclient,
+    eml_client,
     headers
 )
 
@@ -29,7 +29,7 @@ from fixtures import (
 logger = daiquiri.getLogger(__name__)
 
 
-def test_add_eml(emlclient, cookies, headers, mocker):
+def test_add_eml(eml_client, cookies, headers, mocker):
     mock_requests_response = MagicMock(
         status_code=200,
         reason="OK",
@@ -38,9 +38,9 @@ def test_add_eml(emlclient, cookies, headers, mocker):
         text="{'ADD_EML': 'OK'}"
     )
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
-    emlclient.add_eml(
+    eml_client.add_eml(
         principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
         eml="<eml></eml>"
     )
-    assert emlclient.response.status_code == 200
-    assert emlclient.response.body == "{'ADD_EML': 'OK'}"
+    assert eml_client.response.status_code == 200
+    assert eml_client.response.body == "{'ADD_EML': 'OK'}"

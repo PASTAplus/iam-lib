@@ -14,20 +14,21 @@
 :Created:
     5/15/25
 """
+from datetime import datetime, timedelta, timezone
 from unittest.mock import MagicMock
 
 import daiquiri
 import requests
 
-import iam_lib.api.authorized as iam_authorized
 
-from fixtures import client, cookies, headers
+from fixtures import authorized_client, cookies, headers
+from utilities import make_token
 
 
 logger = daiquiri.getLogger(__name__)
 
 
-def test_is_authorized(client, cookies, headers, mocker):
+def test_is_authorized(authorized_client, cookies, headers, mocker):
     mock_requests_response = MagicMock(
         status_code=200,
         reason="OK",
@@ -36,12 +37,11 @@ def test_is_authorized(client, cookies, headers, mocker):
         text="{'IS_AUTHORIZED': 'OK'}"
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
-    is_authorized = iam_authorized.is_authorized(
-        client=client,
-        token=client.token,
+    is_authorized = authorized_client.is_authorized(
+        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1)),
         resource_key="resource_xyz",
         permission="write"
     )
     assert is_authorized is True
-    assert client.response.status_code == 200
-    assert client.response.body == "{'IS_AUTHORIZED': 'OK'}"
+    assert authorized_client.response.status_code == 200
+    assert authorized_client.response.body == "{'IS_AUTHORIZED': 'OK'}"

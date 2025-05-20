@@ -63,7 +63,7 @@ def test_post(client, cookies, headers, mocker):
         "principal": "EDI-3fa734a7cd6e40998a5c2b5486b6eced",
         "eml": "<eml></eml>"
     }
-    response = client.post(route="auth/v1/ping", parameters=parameters)
+    response = client.post(route="auth/v1/ping", form_params=parameters)
     assert response.status_code == 200
     assert response.body == "{'POST': 'OK'}"
 
@@ -81,7 +81,7 @@ def test_put(client, cookies, headers, mocker):
         "principal": "EDI-3fa734a7cd6e40998a5c2b5486b6eced",
         "eml": "<eml></eml>"
     }
-    response = client.put(route="auth/v1/ping", parameters=parameters)
+    response = client.put(route="auth/v1/ping", form_params=parameters)
     assert response.status_code == 200
     assert response.body == "{'PUT': 'OK'}"
 
