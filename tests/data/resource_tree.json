@@ -1,0 +1,419 @@
+[
+  {
+    "key": "eeb4361383494c83a3db01bc7472f4dc",
+    "label": "edi.1145.1",
+    "type": "package",
+    "children": [
+      {
+        "key": "243af8d5244a46a3918545ebc5f3525c",
+        "label": "Data",
+        "type": "collection",
+        "children": [
+          {
+            "key": "3d353fbb5de54fadb04a2cbf8ddf5247",
+            "label": "landslide_risk.csv",
+            "type": "data",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-4053bc35b9264889ad53d7a5e2c83446",
+                "title": "Daniel's group #0",
+                "description": null,
+                "permission": "READ"
+              }
+            ]
+          }
+        ],
+        "principals": [
+          {
+            "edi_id": "EDI-9df7ff7a61e148be97a7527b467e71de",
+            "title": "Nancy Lewis",
+            "description": "nancy@lewis.com",
+            "permission": "WRITE"
+          },
+          {
+            "edi_id": "EDI-17a7b5077c2948578f667b42ffb34526",
+            "title": "Richard's group #0",
+            "description": null,
+            "permission": "CHANGE"
+          }
+        ]
+      },
+      {
+        "key": "ce9746fc23d7478982be44eda20359b7",
+        "label": "Metadata",
+        "type": "collection",
+        "children": [
+          {
+            "key": "f39eb410a5c1455e903a9881d596dafb",
+            "label": "quality_report.xml",
+            "type": "metadata",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-3c11d7ebcb6d4150b3037b71feffff48",
+                "title": "Matthew's group #1",
+                "description": null,
+                "permission": "WRITE"
+              }
+            ]
+          },
+          {
+            "key": "b2fd0c87d02e470fb8e4f474443f784e",
+            "label": "metadata.eml",
+            "type": "metadata",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-4053bc35b9264889ad53d7a5e2c83446",
+                "title": "Daniel's group #0",
+                "description": null,
+                "permission": "CHANGE"
+              },
+              {
+                "edi_id": "EDI-c70bf7d7e47c4e1f8f0a1be9d2506778",
+                "title": "Roger's group #0",
+                "description": null,
+                "permission": "READ"
+              }
+            ]
+          }
+        ],
+        "principals": [
+          {
+            "edi_id": "EDI-61b0d8d78ca84f84a2af4a7cbb7818f3",
+            "title": "David White",
+            "description": "david@white.com",
+            "permission": "READ"
+          }
+        ]
+      }
+    ],
+    "principals": [
+      {
+        "edi_id": "EDI-82306c89d5ed44a689f1f634af11a850",
+        "title": "Linda Anderson",
+        "description": "linda@anderson.com",
+        "permission": "WRITE"
+      }
+    ]
+  },
+  {
+    "key": "0c92f09e68e14096b2c858c9a68b14b1",
+    "label": "edi.1145.2",
+    "type": "package",
+    "children": [
+      {
+        "key": "99b16fd0c2ba4403a9f98d630ebf66a2",
+        "label": "Data",
+        "type": "collection",
+        "children": [
+          {
+            "key": "e951b9f5a420404ca6786730ef6d0236",
+            "label": "conservation_efforts.jpg",
+            "type": "data",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-2fe71de8294340f9b5b04f956f7b755d",
+                "title": "Daniel Hall",
+                "description": "daniel@hall.com",
+                "permission": "READ"
+              },
+              {
+                "edi_id": "EDI-bbb7a22a4f764a22a1dc1400595d0855",
+                "title": "James's group #2",
+                "description": null,
+                "permission": "CHANGE"
+              }
+            ]
+          },
+          {
+            "key": "5f5c6b21cb04459d94cc6e48d78095db",
+            "label": "hydrological_measurements.jpg",
+            "type": "data",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-7ec8678963aa4635a5277ba9b165b4b6",
+                "title": "Christopher's group #1",
+                "description": null,
+                "permission": "WRITE"
+              },
+              {
+                "edi_id": "EDI-70a907b4d0614b9483b56274ab2b3c06",
+                "title": "Mary's group #2",
+                "description": null,
+                "permission": "CHANGE"
+              }
+            ]
+          },
+          {
+            "key": "570c641afde54707aa54b3b9560b3e86",
+            "label": "carbon_emissions.tiff",
+            "type": "data",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-d8265908d6454a33ba4f3670de97bb7c",
+                "title": "Betty's group #1",
+                "description": null,
+                "permission": "READ"
+              },
+              {
+                "edi_id": "EDI-2709d39cf1294166993b03208cdc8a64",
+                "title": "David's group #0",
+                "description": null,
+                "permission": "WRITE"
+              }
+            ]
+          }
+        ],
+        "principals": [
+          {
+            "edi_id": "EDI-51ef81deca2e478ba1ca822ec4a7902b",
+            "title": "Barbara Jackson",
+            "description": "barbara@jackson.com",
+            "permission": "CHANGE"
+          }
+        ]
+      },
+      {
+        "key": "db87eff8148c4df6af7c0f4d6aed8d11",
+        "label": "Metadata",
+        "type": "collection",
+        "children": [
+          {
+            "key": "b62cd8acba4e41759e54b7efe122913f",
+            "label": "quality_report.xml",
+            "type": "metadata",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-2872410f457e49b2b7cf76e646af8cae",
+                "title": "John Smith",
+                "description": "john@smith.com",
+                "permission": "WRITE"
+              }
+            ]
+          },
+          {
+            "key": "e99bd984e3e3447ab0d7d0b3c9a6cc7f",
+            "label": "metadata.eml",
+            "type": "metadata",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-2c2ac06234854eb69154d6cb622521b2",
+                "title": "Karen's group #1",
+                "description": null,
+                "permission": "CHANGE"
+              },
+              {
+                "edi_id": "EDI-45c13bcf87474a8388fb4e80507c17a5",
+                "title": "Michael's group #0",
+                "description": null,
+                "permission": "WRITE"
+              }
+            ]
+          }
+        ],
+        "principals": [
+          {
+            "edi_id": "EDI-7ae088264ff64f11bf12eeaaa3889153",
+            "title": "Barbara's group #3",
+            "description": null,
+            "permission": "CHANGE"
+          },
+          {
+            "edi_id": "EDI-9985cef9d54b49d2afea7ce0de4dbaeb",
+            "title": "Joseph Robinson",
+            "description": "joseph@robinson.com",
+            "permission": "WRITE"
+          }
+        ]
+      }
+    ],
+    "principals": [
+      {
+        "edi_id": "EDI-7ec8678963aa4635a5277ba9b165b4b6",
+        "title": "Christopher's group #1",
+        "description": null,
+        "permission": "READ"
+      }
+    ]
+  },
+  {
+    "key": "8706936f636149fb89e890253938fc03",
+    "label": "edi.1145.3",
+    "type": "package",
+    "children": [
+      {
+        "key": "796ebc61feda40018e2ef150e7770aec",
+        "label": "Data",
+        "type": "collection",
+        "children": [
+          {
+            "key": "0d6ff658d7374c298d877072c583cb81",
+            "label": "forest_inventory.tiff",
+            "type": "data",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-565ff4f4568b4505b169cd0973b186fe",
+                "title": "Robert Taylor",
+                "description": "robert@taylor.com",
+                "permission": "READ"
+              }
+            ]
+          },
+          {
+            "key": "2d292703900543b48159059275050cc0",
+            "label": "precipitation_levels.tiff",
+            "type": "data",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-2fe71de8294340f9b5b04f956f7b755d",
+                "title": "Daniel Hall",
+                "description": "daniel@hall.com",
+                "permission": "CHANGE"
+              },
+              {
+                "edi_id": "EDI-2709d39cf1294166993b03208cdc8a64",
+                "title": "David's group #0",
+                "description": null,
+                "permission": "READ"
+              }
+            ]
+          },
+          {
+            "key": "09e5f924b3064be6bdf95464356cb713",
+            "label": "observation_records.jpg",
+            "type": "data",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-322809a02bcd4a17901bed6749db4b34",
+                "title": "Richard's group #1",
+                "description": null,
+                "permission": "READ"
+              }
+            ]
+          },
+          {
+            "key": "bc7428b5f7534736a2951f65aa256589",
+            "label": "mammal_sightings.csv",
+            "type": "data",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-447dedb789844eab90a334f0765305f4",
+                "title": "Jane Doe",
+                "description": "jane@doe.com",
+                "permission": "WRITE"
+              }
+            ]
+          },
+          {
+            "key": "bff06b0851be45119f36c752384f731d",
+            "label": "lake_sediments.csv",
+            "type": "data",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-322809a02bcd4a17901bed6749db4b34",
+                "title": "Richard's group #1",
+                "description": null,
+                "permission": "WRITE"
+              }
+            ]
+          }
+        ],
+        "principals": [
+          {
+            "edi_id": "EDI-acfc1f0e116440e8bf7fd888ec3d4acc",
+            "title": "David's group #1",
+            "description": null,
+            "permission": "CHANGE"
+          }
+        ]
+      },
+      {
+        "key": "96a2a397e6b24f52a1119c90b01aff90",
+        "label": "Metadata",
+        "type": "collection",
+        "children": [
+          {
+            "key": "90c6b7df038a4c64b43f56c33d9387e0",
+            "label": "quality_report.xml",
+            "type": "metadata",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-7ec8678963aa4635a5277ba9b165b4b6",
+                "title": "Christopher's group #1",
+                "description": null,
+                "permission": "READ"
+              },
+              {
+                "edi_id": "EDI-2d379415072d470b80c4fe33a3e10344",
+                "title": "Matthew Young",
+                "description": "matthew@young.com",
+                "permission": "READ"
+              }
+            ]
+          },
+          {
+            "key": "6e657553749447beb4ea754235fb4e49",
+            "label": "metadata.eml",
+            "type": "metadata",
+            "children": [],
+            "principals": [
+              {
+                "edi_id": "EDI-2fe71de8294340f9b5b04f956f7b755d",
+                "title": "Daniel Hall",
+                "description": "daniel@hall.com",
+                "permission": "CHANGE"
+              },
+              {
+                "edi_id": "EDI-3c11d7ebcb6d4150b3037b71feffff48",
+                "title": "Matthew's group #1",
+                "description": null,
+                "permission": "CHANGE"
+              }
+            ]
+          }
+        ],
+        "principals": [
+          {
+            "edi_id": "EDI-d1cc6a1e16214d1f87a0436eb4007d09",
+            "title": "Betty Allen",
+            "description": "betty@allen.com",
+            "permission": "WRITE"
+          },
+          {
+            "edi_id": "EDI-afd7aab310c74ed8a01cdf1a72319298",
+            "title": "Emily Davis",
+            "description": "emily@davis.com",
+            "permission": "CHANGE"
+          }
+        ]
+      }
+    ],
+    "principals": [
+      {
+        "edi_id": "EDI-3d9bd93706194e62b6bb4950bd5dfd2c",
+        "title": "Lisa's group #1",
+        "description": null,
+        "permission": "WRITE"
+      },
+      {
+        "edi_id": "EDI-322809a02bcd4a17901bed6749db4b34",
+        "title": "Richard's group #1",
+        "description": null,
+        "permission": "CHANGE"
+      }
+    ]
+  }
+]
