@@ -19,7 +19,7 @@ from unittest.mock import MagicMock
 import daiquiri
 import requests
 
-from fixtures import (
+from tests.fixtures import (
     cookies,
     eml_client,
     headers

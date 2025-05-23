@@ -18,7 +18,7 @@ import daiquiri
 import jwt
 import requests
 
-from fixtures import client, cookies, headers
+from tests.fixtures import client, cookies, headers
 
 
 logger = daiquiri.getLogger(__name__)

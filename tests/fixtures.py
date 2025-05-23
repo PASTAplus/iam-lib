@@ -26,7 +26,7 @@ from iam_lib.api.authorized import AuthorizedClient
 from iam_lib.api.eml import EMLClient
 from iam_lib.api.resource import ResourceClient
 from iam_lib.api.rule import RuleClient
-from utilities import make_token
+from tests.utilities import make_token
 
 
 @pytest.fixture(scope="function")

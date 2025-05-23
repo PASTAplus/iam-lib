@@ -19,7 +19,7 @@ from unittest.mock import MagicMock
 import daiquiri
 import requests
 
-from fixtures import rule_client, cookies, headers
+from tests.fixtures import rule_client, cookies, headers
 
 
 logger = daiquiri.getLogger(__name__)

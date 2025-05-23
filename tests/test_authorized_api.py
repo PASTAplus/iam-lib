@@ -21,8 +21,8 @@ import daiquiri
 import requests
 
 
-from fixtures import authorized_client, cookies, headers
-from utilities import make_token
+from tests.fixtures import authorized_client, cookies, headers
+from tests.utilities import make_token
 
 
 logger = daiquiri.getLogger(__name__)
