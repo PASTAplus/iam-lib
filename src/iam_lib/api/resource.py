@@ -16,7 +16,7 @@
 """
 import daiquiri
 
-from iam_lib.client import Client
+from iam_lib.api.client import Client
 import iam_lib.models.response_model as response_model
 
 
@@ -111,7 +111,6 @@ class ResourceClient(Client):
         """Delete resource.
 
         Args:
-            client (iam_lib.client.Client): IAM REST API client
             resource_key (str): unique identifier for the resource
 
          Returns:
@@ -166,7 +165,6 @@ class ResourceClient(Client):
         """Read resources of principal.
 
         Args:
-            client (iam_lib.client.Client): IAM REST API client
             principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
 
          Returns:

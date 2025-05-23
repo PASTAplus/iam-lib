@@ -19,7 +19,7 @@ import json
 import daiquiri
 
 import iam_lib
-from iam_lib.client import Client
+from iam_lib.api.client import Client
 import iam_lib.exceptions
 
 

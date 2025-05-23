@@ -16,7 +16,7 @@
 """
 import daiquiri
 
-from iam_lib.client import Client
+from iam_lib.api.client import Client
 import iam_lib.models.response_model as response_model
 
 

@@ -20,7 +20,7 @@ import pytest
 from requests.cookies import RequestsCookieJar  # For mocking
 from requests.structures import CaseInsensitiveDict  # For mocking
 
-from iam_lib.client import Client
+from iam_lib.api.client import Client
 from iam_lib.api.access import AccessClient
 from iam_lib.api.authorized import AuthorizedClient
 from iam_lib.api.eml import EMLClient

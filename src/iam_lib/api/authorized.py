@@ -14,11 +14,10 @@
 :Created:
     5/13/25
 """
-from urllib.parse import urlencode, quote
 
 import daiquiri
 
-from iam_lib.client import Client
+from iam_lib.api.client import Client
 from iam_lib.exceptions import IAMResponseError
 
 logger = daiquiri.getLogger(__name__)

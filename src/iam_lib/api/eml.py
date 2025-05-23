@@ -16,7 +16,7 @@
 """
 import daiquiri
 
-from iam_lib.client import Client
+from iam_lib.api.client import Client
 
 
 logger = daiquiri.getLogger(__name__)
