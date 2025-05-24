@@ -26,12 +26,8 @@ pattern = "(?P<version>\\d+\\.\\d+\\.\\d+)"
 only-include = ["src"]
 
 [tool.pytest.ini_options]
-testpaths = [
-  "tests"
-]
+testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
 addopts = "--capture=no --verbose"
-pythonpath = [
-  "src"
-]
+pythonpath = ["src"]
