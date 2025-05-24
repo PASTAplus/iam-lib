@@ -286,7 +286,10 @@ def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str)
         "parent_resource_key",  # Resource key of parent
         "descendants",  # Boolean (True or False)
         "permission",  # Resource permission (enumerated set: read, write, or changePermission)
-        "token"  # Base64 encoded JWT token of the client
+        "token",  # Base64 encoded JWT token of the client
+        "given_name",  # Given name
+        "family_name",  # Family name
+        "email",  # Email address
     )
     for key,value in parameters.items():
         if key not in valid_parameters:
