@@ -24,6 +24,7 @@ from iam_lib.api.client import Client
 from iam_lib.api.access import AccessClient
 from iam_lib.api.authorized import AuthorizedClient
 from iam_lib.api.eml import EMLClient
+from iam_lib.api.profile import ProfileClient
 from iam_lib.api.resource import ResourceClient
 from iam_lib.api.rule import RuleClient
 from tests.utilities import make_token
@@ -68,6 +69,18 @@ def authorized_client():
 @pytest.fixture
 def eml_client():
     return EMLClient(
+        scheme="HTTPS",
+        host="localhost",
+        accept="JSON",
+        public_key_path="./data/public_key.pem",
+        algorithm="ES256",
+        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
+    )
+
+
+@pytest.fixture
+def profile_client():
+    return ProfileClient(
         scheme="HTTPS",
         host="localhost",
         accept="JSON",

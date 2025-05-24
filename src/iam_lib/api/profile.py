@@ -86,8 +86,8 @@ class ProfileClient(Client):
         """
         route = f"auth/v1/profile/{edi_identifier}"
         form_params = {
-            "givenName": given_name,
-            "familyName": family_name,
+            "given_name": given_name,
+            "family_name": family_name,
             "email": email
         }
         self.put(route=route, form_params=form_params)
