@@ -3,10 +3,10 @@
 
 """
 :Mod:
-    test_eml
+    test_resource_api
 
 :Synopsis:
-    Pytest for the EML API
+    Pytest for the resource API
 
 :Author:
     servilla
