@@ -41,7 +41,7 @@ def test_create_resource(resource_client, cookies, headers, mocker):
         resource_type="resource"
     )
     assert resource_client.response.status_code == 200
-    assert resource_client.response.body == "{'CREATE_RESOURCE': 'OK'}"
+    assert resource_client.response.text == "{'CREATE_RESOURCE': 'OK'}"
 
 
 def test_update_resource(resource_client, cookies, headers, mocker):
@@ -60,7 +60,7 @@ def test_update_resource(resource_client, cookies, headers, mocker):
         parent_resource_key="parent_resource_xyz"
     )
     assert resource_client.response.status_code == 200
-    assert resource_client.response.body == "{'UPDATE_RESOURCE': 'OK'}"
+    assert resource_client.response.text == "{'UPDATE_RESOURCE': 'OK'}"
 
 
 def test_delete_resource(resource_client, cookies, headers, mocker):
@@ -76,7 +76,7 @@ def test_delete_resource(resource_client, cookies, headers, mocker):
         resource_key="resource_xyz"
     )
     assert resource_client.response.status_code == 200
-    assert resource_client.response.body == "{'DELETE_RESOURCE': 'OK'}"
+    assert resource_client.response.text == "{'DELETE_RESOURCE': 'OK'}"
 
 
 def test_read_resource(resource_client, cookies, headers, mocker):
@@ -94,7 +94,7 @@ def test_read_resource(resource_client, cookies, headers, mocker):
         all=True
     )
     assert resource_client.response.status_code == 200
-    assert resource_client.response.body == "{'READ_RESOURCE': 'OK'}"
+    assert resource_client.response.text == "{'READ_RESOURCE': 'OK'}"
 
 
 def test_read_resources(resource_client, cookies, headers, mocker):
@@ -110,6 +110,6 @@ def test_read_resources(resource_client, cookies, headers, mocker):
         principal = "EDI-3fa734a7cd6e40998a5c2b5486b6eced"
     )
     assert resource_client.response.status_code == 200
-    assert resource_client.response.body == "{'READ_RESOURCES': 'OK'}"
+    assert resource_client.response.text == "{'READ_RESOURCES': 'OK'}"
 
 

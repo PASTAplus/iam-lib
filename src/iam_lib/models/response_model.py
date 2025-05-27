@@ -41,8 +41,8 @@ def response_data(client: Client) -> str | dict:
     """
     if client.accept == "JSON":
         try:
-            return json.loads(client.response.body)
+            return json.loads(client.response.text)
         except json.decoder.JSONDecodeError as e:
             raise iam_lib.exceptions.IAMJSONDecodeError(e)
     else:
-        return client.response.body  # As XML str
+        return client.response.text  # As XML str

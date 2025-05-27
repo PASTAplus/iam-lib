@@ -40,7 +40,7 @@ def test_create_rule(rule_client, cookies, headers, mocker):
         permission="write"
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.body == "{'CREATE_RULE': 'OK'}"
+    assert rule_client.response.text == "{'CREATE_RULE': 'OK'}"
 
 
 def test_update_rule(rule_client, cookies, headers, mocker):
@@ -58,7 +58,7 @@ def test_update_rule(rule_client, cookies, headers, mocker):
         permission="write"
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.body == "{'UPDATE_RULE': 'OK'}"
+    assert rule_client.response.text == "{'UPDATE_RULE': 'OK'}"
 
 
 def test_delete_rule(rule_client, cookies, headers, mocker):
@@ -75,7 +75,7 @@ def test_delete_rule(rule_client, cookies, headers, mocker):
         principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced"
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.body == "{'DELETE_RULE': 'OK'}"
+    assert rule_client.response.text == "{'DELETE_RULE': 'OK'}"
 
 
 def test_read_rule(rule_client, cookies, headers, mocker):
@@ -92,7 +92,7 @@ def test_read_rule(rule_client, cookies, headers, mocker):
         principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced"
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.body == "{'READ_RULE': 'OK'}"
+    assert rule_client.response.text == "{'READ_RULE': 'OK'}"
 
 
 def test_read_principal_rules(rule_client, cookies, headers, mocker):
@@ -108,7 +108,7 @@ def test_read_principal_rules(rule_client, cookies, headers, mocker):
         principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced"
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.body == "{'READ_PRINCIPAL_RULES': 'OK'}"
+    assert rule_client.response.text == "{'READ_PRINCIPAL_RULES': 'OK'}"
 
 
 def test_read_resource_rules(rule_client, cookies, headers, mocker):
@@ -124,5 +124,5 @@ def test_read_resource_rules(rule_client, cookies, headers, mocker):
         resource_key="resource_xyz",
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.body == "{'READ_RESOURCE_RULES': 'OK'}"
+    assert rule_client.response.text == "{'READ_RESOURCE_RULES': 'OK'}"
 

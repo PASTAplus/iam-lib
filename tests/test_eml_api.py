@@ -43,4 +43,4 @@ def test_add_eml(eml_client, cookies, headers, mocker):
         eml="<eml></eml>"
     )
     assert eml_client.response.status_code == 200
-    assert eml_client.response.body == "{'ADD_EML': 'OK'}"
+    assert eml_client.response.text == "{'ADD_EML': 'OK'}"

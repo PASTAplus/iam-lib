@@ -41,4 +41,4 @@ def test_add_access(access_client, cookies, headers, mocker):
         resource_type="service"
     )
     assert access_client.response.status_code == 200
-    assert access_client.response.body == "{'ADD_ACCESS': 'OK'}"
+    assert access_client.response.text == "{'ADD_ACCESS': 'OK'}"

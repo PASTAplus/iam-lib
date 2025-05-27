@@ -47,7 +47,7 @@ def test_get(client, cookies, headers, mocker):
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
     response = client.get(route="auth/v1/ping")
     assert response.status_code == 200
-    assert response.body == "{'GET': 'OK'}"
+    assert response.text == "{'GET': 'OK'}"
 
 
 def test_post(client, cookies, headers, mocker):
@@ -65,7 +65,7 @@ def test_post(client, cookies, headers, mocker):
     }
     response = client.post(route="auth/v1/ping", form_params=parameters)
     assert response.status_code == 200
-    assert response.body == "{'POST': 'OK'}"
+    assert response.text == "{'POST': 'OK'}"
 
 
 def test_put(client, cookies, headers, mocker):
@@ -83,7 +83,7 @@ def test_put(client, cookies, headers, mocker):
     }
     response = client.put(route="auth/v1/ping", form_params=parameters)
     assert response.status_code == 200
-    assert response.body == "{'PUT': 'OK'}"
+    assert response.text == "{'PUT': 'OK'}"
 
 
 def test_delete(client, cookies, headers, mocker):
@@ -97,4 +97,4 @@ def test_delete(client, cookies, headers, mocker):
     mocker.patch.object(requests, "delete", return_value=mock_requests_response)
     response = client.delete(route="auth/v1/ping")
     assert response.status_code == 200
-    assert response.body == "{'DELETE': 'OK'}"
+    assert response.text == "{'DELETE': 'OK'}"

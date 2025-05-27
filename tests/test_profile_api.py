@@ -38,7 +38,7 @@ def test_create_profile(profile_client, cookies, headers, mocker):
         principal="uid=jack,o=EDI,dc=edirepository,dc=org",
     )
     assert profile_client.response.status_code == 200
-    assert profile_client.response.body == "{'CREATE_PROFILE': 'OK'}"
+    assert profile_client.response.text == "{'CREATE_PROFILE': 'OK'}"
 
 
 def test_update_profile(profile_client, cookies, headers, mocker):
@@ -57,7 +57,7 @@ def test_update_profile(profile_client, cookies, headers, mocker):
         email="jack.black@email.com"
     )
     assert profile_client.response.status_code == 200
-    assert profile_client.response.body == "{'UPDATE_PROFILE': 'OK'}"
+    assert profile_client.response.text == "{'UPDATE_PROFILE': 'OK'}"
 
 
 def test_delete_profile(profile_client, cookies, headers, mocker):
@@ -73,7 +73,7 @@ def test_delete_profile(profile_client, cookies, headers, mocker):
         edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
     )
     assert profile_client.response.status_code == 200
-    assert profile_client.response.body == "{'DELETE_PROFILE': 'OK'}"
+    assert profile_client.response.text == "{'DELETE_PROFILE': 'OK'}"
 
 
 def test_read_profile(profile_client, cookies, headers, mocker):
@@ -89,4 +89,4 @@ def test_read_profile(profile_client, cookies, headers, mocker):
         edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
     )
     assert profile_client.response.status_code == 200
-    assert profile_client.response.body == "{'READ_PROFILE': 'OK'}"
+    assert profile_client.response.text == "{'READ_PROFILE': 'OK'}"

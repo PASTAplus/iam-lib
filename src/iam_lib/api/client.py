@@ -17,7 +17,6 @@ import daiquiri
 import requests
 import jwt
 
-from iam_lib.response import Response
 import iam_lib.exceptions
 import iam_lib.token
 
@@ -113,10 +112,10 @@ class Client:
         self._token = _validate_token(token, self._public_key_path, self._algorithm)
 
     @property
-    def response(self) -> Response:
+    def response(self) -> None | requests.Response:
         return self._response
 
-    def post(self, route: str, form_params: dict) -> Response:
+    def post(self, route: str, form_params: dict) -> requests.Response:
         """Send a POST request to the IAM REST API
 
         Args:
@@ -124,7 +123,7 @@ class Client:
             form_params (dict): IAM POST form parameters
 
         Returns:
-            response (Response): IAM response object
+            response (requests.Response): requests response object
     
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
@@ -133,7 +132,7 @@ class Client:
         _validate_parameters(form_params, self._public_key_path, self._algorithm)
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.post(
+            self._response = requests.post(
                 url,
                 json=form_params,
                 cookies=self._cookies,
@@ -141,12 +140,11 @@ class Client:
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
-        self._response = Response(request)
         if self._response.status_code != 200:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
-    def put(self, route: str, form_params: dict) -> Response:
+    def put(self, route: str, form_params: dict) -> requests.Response:
         """Send a PUT request to the IAM REST API
 
         Args:
@@ -154,7 +152,7 @@ class Client:
             form_params (dict): IAM POST form parameters
 
         Returns:
-            response (Response): IAM response object
+            response (requests.Response): requests response object
     
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
@@ -163,7 +161,7 @@ class Client:
         _validate_parameters(form_params, self._public_key_path, self._algorithm)
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.put(
+            self._response = requests.put(
                 url,
                 json=form_params,
                 cookies=self._cookies,
@@ -171,12 +169,11 @@ class Client:
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
-        self._response = Response(request)
         if self._response.status_code != 200:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
-    def get(self, route: str, query_params=None) -> Response:
+    def get(self, route: str, query_params=None) -> requests.Response:
         """Send a GET request to the IAM REST API
 
         Args:
@@ -184,7 +181,7 @@ class Client:
             route (str): IAM route
 
         Returns:
-            response (Response): IAM response object
+            response (requests.Response): requests response object
     
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
@@ -194,7 +191,7 @@ class Client:
             query_params = {}
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.get(
+            self._response = requests.get(
                 url,
                 params=query_params,
                 cookies=self._cookies,
@@ -202,12 +199,11 @@ class Client:
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
-        self._response = Response(request)
         if self._response.status_code != 200:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
-    def delete(self, route: str) -> Response:
+    def delete(self, route: str) -> requests.Response:
         """Send a DELETE request to the IAM REST API
 
         Args:
@@ -222,10 +218,9 @@ class Client:
          """
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            request = requests.delete(url, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
+            self._response = requests.delete(url, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
-        self._response = Response(request)
         if self._response.status_code != 200:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
