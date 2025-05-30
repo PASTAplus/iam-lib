@@ -38,14 +38,12 @@ class EMLClient(Client):
 
     def add_eml(
             self,
-            principal: str,
             eml: str
     ) -> None:
         """To parse a valid EML document and add its ACRs to the ACR registry for the resources identified in the EML
         document
 
         Args:
-            principal (str): IAM principal owner (user profile EDI-ID or IdP identifier)
             eml (str): valid EML document
 
         Returns:
@@ -57,7 +55,6 @@ class EMLClient(Client):
         """
         route = "auth/v1/eml"
         parameters = {
-            "principal": principal,
             "eml": eml,
         }
         self.post(route=route, form_params=parameters)

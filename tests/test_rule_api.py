@@ -104,9 +104,7 @@ def test_read_principal_rules(rule_client, cookies, headers, mocker):
         text="{'READ_PRINCIPAL_RULES': 'OK'}"
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
-    rule_client.read_principal_rules(
-        principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced"
-    )
+    rule_client.read_principal_rules()
     assert rule_client.response.status_code == 200
     assert rule_client.response.text == "{'READ_PRINCIPAL_RULES': 'OK'}"
 

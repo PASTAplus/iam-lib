@@ -39,7 +39,6 @@ class ResourceClient(Client):
 
     def create_resource(
             self,
-            principal: str,
             resource_key: str,
             resource_label: str,
             resource_type: str,
@@ -48,7 +47,6 @@ class ResourceClient(Client):
         """Create resource.
 
         Args:
-            principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
             resource_key (str): unique identifier for the resource
             resource_label (str): human interpretable label of the resource
             resource_type (str): type of resource
@@ -63,7 +61,6 @@ class ResourceClient(Client):
         """
         route = "auth/v1/resource"
         form_params = {
-            "principal": principal,
             "resource_key": resource_key,
             "resource_label": resource_label,
             "resource_type": resource_type,
@@ -160,12 +157,11 @@ class ResourceClient(Client):
 
     def read_resources(
             self,
-            principal: str
     ) -> str | dict:
         """Read resources of principal.
 
         Args:
-            principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
+            None
 
          Returns:
             resources (str | dict)
@@ -175,6 +171,6 @@ class ResourceClient(Client):
             iam_lib.exceptions.IAMResponseError: On non-200 response
             iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
-        route = f"auth/v1/resources/{principal}"
+        route = f"auth/v1/resources"
         self.get(route=route)
         return response_model.response_data(self)

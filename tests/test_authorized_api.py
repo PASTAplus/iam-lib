@@ -38,7 +38,6 @@ def test_is_authorized(authorized_client, cookies, headers, mocker):
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
     is_authorized = authorized_client.is_authorized(
-        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1)),
         resource_key="resource_xyz",
         permission="write"
     )

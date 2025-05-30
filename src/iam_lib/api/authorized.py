@@ -39,14 +39,13 @@ class AuthorizedClient(Client):
 
     def is_authorized(
             self,
-            token: str,
             resource_key: str,
             permission: str
     ) -> bool:
-        """Test if principal is authorized to access the resource at the given permission
+        """Test if principal as identified in the authentication token is authorized to access the resource at the
+        given permission
 
         Args:
-            token (str): IAM token
             resource_key (str): unique identifier for the resource
             permission (str): IAM permission (read, write, or changePermission)
 
@@ -57,7 +56,6 @@ class AuthorizedClient(Client):
             iam_lib.exceptions.IAMRequestError: On HTTP request error
         """
         query_params = {
-            "token": token,
             "resource_key": resource_key,
             "permission": permission,
         }

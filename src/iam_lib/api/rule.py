@@ -143,13 +143,12 @@ class RuleClient(Client):
     
     
     def read_principal_rules(
-            self,
-            principal: str,
+            self
     ) -> str | dict:
-        """Read rules associated with principal.
+        """Read rules associated with principal who has changePermission.
     
         Args:
-            principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
+            None
     
         Returns:
             rule (str | dict)
@@ -159,7 +158,7 @@ class RuleClient(Client):
             iam_lib.exceptions.IAMResponseError: On non-200 response
             iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
-        route = f"auth/v1/rules/principal/{principal}"
+        route = f"auth/v1/rules/principal"
         self.get(route=route)
         return response_model.response_data(self)
     
@@ -181,6 +180,6 @@ class RuleClient(Client):
             iam_lib.exceptions.IAMResponseError: On non-200 response
             iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
-        route = f"auth/v1/rules/resource_key/{resource_key}"
+        route = f"auth/v1/rules/resource/{resource_key}"
         self.get(route=route)
         return response_model.response_data(self)

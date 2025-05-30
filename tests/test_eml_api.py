@@ -39,7 +39,6 @@ def test_add_eml(eml_client, cookies, headers, mocker):
     )
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
     eml_client.add_eml(
-        principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
         eml="<eml></eml>"
     )
     assert eml_client.response.status_code == 200

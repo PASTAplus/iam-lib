@@ -35,7 +35,6 @@ def test_create_resource(resource_client, cookies, headers, mocker):
     )
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
     resource_client.create_resource(
-        principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
         resource_key="resource_xyz",
         resource_label="xyz",
         resource_type="resource"
@@ -106,9 +105,7 @@ def test_read_resources(resource_client, cookies, headers, mocker):
         text="{'READ_RESOURCES': 'OK'}"
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
-    resource_client.read_resources(
-        principal = "EDI-3fa734a7cd6e40998a5c2b5486b6eced"
-    )
+    resource_client.read_resources()
     assert resource_client.response.status_code == 200
     assert resource_client.response.text == "{'READ_RESOURCES': 'OK'}"
 
