@@ -38,7 +38,7 @@ def client():
         accept="JSON",
         public_key_path="./data/public_key.pem",
         algorithm="ES256",
-        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
+        token=make_token()
     )
 
 
@@ -50,7 +50,7 @@ def access_client():
         accept="JSON",
         public_key_path="./data/public_key.pem",
         algorithm="ES256",
-        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
+        token=make_token()
     )
 
 
@@ -62,7 +62,7 @@ def authorized_client():
         accept="JSON",
         public_key_path="./data/public_key.pem",
         algorithm="ES256",
-        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
+        token=make_token()
     )
 
 
@@ -74,7 +74,7 @@ def eml_client():
         accept="JSON",
         public_key_path="./data/public_key.pem",
         algorithm="ES256",
-        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
+        token=make_token()
     )
 
 
@@ -86,7 +86,7 @@ def profile_client():
         accept="JSON",
         public_key_path="./data/public_key.pem",
         algorithm="ES256",
-        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
+        token=make_token()
     )
 
 
@@ -98,7 +98,7 @@ def resource_client():
         accept="JSON",
         public_key_path="./data/public_key.pem",
         algorithm="ES256",
-        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
+        token=make_token()
     )
 
 
@@ -110,7 +110,7 @@ def rule_client():
         accept="JSON",
         public_key_path="./data/public_key.pem",
         algorithm="ES256",
-        token=make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))
+        token=make_token()
     )
 
 
@@ -119,7 +119,7 @@ def cookies():
     cookies = RequestsCookieJar()
     cookies.set(
         name="pasta_token",
-        value=f"{make_token(datetime.now(tz=timezone.utc) + timedelta(hours=1))}",
+        value=f"{make_token()}",
         domain="edirepository.org"
     )
     return cookies

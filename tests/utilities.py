@@ -14,39 +14,41 @@
 :Created:
     5/15/25
 """
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import daiquiri
 import jwt
 
+from tests.config import Config
+
 
 logger = daiquiri.getLogger(__name__)
 
 
-def make_token(exp: datetime) -> str:
+def make_token() -> str:
+    now = datetime.now(tz=timezone.utc)
     payload = {
-        "cn": "jack",
+        "sub": "EDI-3fa734a7cd6e40998a5c2b5486b6eced",
+        "cn": None,
         "email": None,
-        "exp": exp,
-        "gn": "jack",
+        "gn": None,
         "hd": "edirepository.org",
-        "iat": 1746738975,
         "iss": "https://auth.edirepository.org",
-        "nbf": 1746738975,
-        "pastaGroups": [],
-        "pastaIdentityId": 3,
-        "pastaIdpName": "ldap",
-        "pastaIdpUid":"uid=jack,o=EDI,dc=edirepository,dc=org",
-        "pastaIsAuthenticated": True,
-        "pastaIsEmailEnabled": False,
-        "pastaIsEmailVerified": False,
-        "pastaIsVetted": True,
         "sn": None,
-        "sub": "EDI-3fa734a7cd6e40998a5c2b5486b6eced"
+        "iat": now,
+        "nbf": now,
+        "exp": now + timedelta(hours=1),
+        "principals": [],
+        "isEmailEnabled": False,
+        "isEmailVerified": False,
+        "identityId": None,
+        "idpName": None,
+        "idpUid": None,
+        "idpCname": None,
     }
-    private_key_path = "./data/private_key.pem"
-    algorithm = "ES256"
+    private_key_path = Config.PRIVATE_KEY_PATH
+    algorithm = Config.JWT_ALGORITHM
     token = jwt.encode(payload, Path(private_key_path).read_text().encode("utf-8"), algorithm=algorithm)
     return token
 
