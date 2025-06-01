@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+:Mod:
+    config
+
+:Synopsis:
+    Configuration class for private content
+
+:Author:
+    servilla
+
+:Created:
+    5/18/25
+"""
+import daiquiri
+
+
+logger = daiquiri.getLogger(__name__)
+
+
+class Config:
+
+    SCHEME = "https"
+    ACCEPT = "json"
+    PUBLIC_KEY_PATH = "PUBLIC_KEY_PATH"
+    PRIVATE_KEY_PATH = "PRIVATE_KEY_PATH"
+    JWT_ALGORITHM = "ES256"
