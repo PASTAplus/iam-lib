@@ -158,7 +158,7 @@ class ResourceClient(Client):
     def read_resources(
             self,
     ) -> str | dict:
-        """Read resources of principal.
+        """Read resources of EDI Token subject.
 
         Args:
             None
