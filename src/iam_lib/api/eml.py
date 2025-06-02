@@ -54,8 +54,8 @@ class EMLClient(Client):
             iam_lib.exceptions.IAMResponseError: On non-200 response
         """
         route = "auth/v1/eml"
-        parameters = {
+        form_params = {
             "eml": eml,
         }
-        self.post(route=route, form_params=parameters)
+        self.post(route=route, form_params=form_params)
         return None

@@ -58,12 +58,12 @@ class RuleClient(Client):
     
         """
         route = "auth/v1/rule"
-        parameters = {
+        form_params = {
             "resource_key": resource_key,
             "principal": principal,
             "permission": permission,
         }
-        self.post(route=route, form_params=parameters)
+        self.post(route=route, form_params=form_params)
         return None
     
     
@@ -88,10 +88,10 @@ class RuleClient(Client):
             iam_lib.exceptions.IAMResponseError: On non-200 response
         """
         route = f"auth/v1/rule/{resource_key}/{principal}"
-        parameters = {
+        form_params = {
             "permission": permission
         }
-        self.put(route=route, form_params=parameters)
+        self.put(route=route, form_params=form_params)
         return None
     
     
@@ -145,10 +145,7 @@ class RuleClient(Client):
     def read_principal_rules(
             self
     ) -> str | dict:
-        """Read rules associated with principal who has changePermission.
-    
-        Args:
-            None
+        """Read rules associated with principal(s) who has changePermission.
     
         Returns:
             rule (str | dict)

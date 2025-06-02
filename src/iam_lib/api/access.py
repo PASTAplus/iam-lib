@@ -61,11 +61,11 @@ class AccessClient(Client):
             iam_lib.exceptions.IAMResponseError: On non-200 response
         """
         route = "auth/v1/access"
-        parameters = {
+        form_params = {
             "access": access,
             "resource_key": resource_key,
             "resource_label": resource_label,
             "resource_type": resource_type,
         }
-        self.post(route=route, form_params=parameters)
+        self.post(route=route, form_params=form_params)
         return None
