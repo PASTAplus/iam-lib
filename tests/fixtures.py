@@ -14,8 +14,6 @@
 :Created:
     5/16/25
 """
-from datetime import datetime, timedelta, timezone
-
 import pytest
 from requests.cookies import RequestsCookieJar  # For mocking
 from requests.structures import CaseInsensitiveDict  # For mocking
@@ -23,21 +21,23 @@ from requests.structures import CaseInsensitiveDict  # For mocking
 from iam_lib.api.client import Client
 from iam_lib.api.access import AccessClient
 from iam_lib.api.authorized import AuthorizedClient
+from iam_lib.api.edi_token import EdiTokenClient
 from iam_lib.api.eml import EMLClient
 from iam_lib.api.profile import ProfileClient
 from iam_lib.api.resource import ResourceClient
 from iam_lib.api.rule import RuleClient
+from tests.config import Config
 from tests.utilities import make_token
 
 
 @pytest.fixture(scope="function")
 def client():
     return Client(
-        scheme="HTTPS",
-        host="localhost",
-        accept="JSON",
-        public_key_path="./data/public_key.pem",
-        algorithm="ES256",
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
         token=make_token()
     )
 
@@ -45,11 +45,11 @@ def client():
 @pytest.fixture
 def access_client():
     return AccessClient(
-        scheme="HTTPS",
-        host="localhost",
-        accept="JSON",
-        public_key_path="./data/public_key.pem",
-        algorithm="ES256",
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
         token=make_token()
     )
 
@@ -57,11 +57,23 @@ def access_client():
 @pytest.fixture
 def authorized_client():
     return AuthorizedClient(
-        scheme="HTTPS",
-        host="localhost",
-        accept="JSON",
-        public_key_path="./data/public_key.pem",
-        algorithm="ES256",
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
+        token=make_token()
+    )
+
+
+@pytest.fixture
+def edi_token_client():
+    return EdiTokenClient(
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
         token=make_token()
     )
 
@@ -69,11 +81,11 @@ def authorized_client():
 @pytest.fixture
 def eml_client():
     return EMLClient(
-        scheme="HTTPS",
-        host="localhost",
-        accept="JSON",
-        public_key_path="./data/public_key.pem",
-        algorithm="ES256",
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
         token=make_token()
     )
 
@@ -81,11 +93,11 @@ def eml_client():
 @pytest.fixture
 def profile_client():
     return ProfileClient(
-        scheme="HTTPS",
-        host="localhost",
-        accept="JSON",
-        public_key_path="./data/public_key.pem",
-        algorithm="ES256",
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
         token=make_token()
     )
 
@@ -93,11 +105,11 @@ def profile_client():
 @pytest.fixture
 def resource_client():
     return ResourceClient(
-        scheme="HTTPS",
-        host="localhost",
-        accept="JSON",
-        public_key_path="./data/public_key.pem",
-        algorithm="ES256",
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
         token=make_token()
     )
 
@@ -105,11 +117,11 @@ def resource_client():
 @pytest.fixture
 def rule_client():
     return RuleClient(
-        scheme="HTTPS",
-        host="localhost",
-        accept="JSON",
-        public_key_path="./data/public_key.pem",
-        algorithm="ES256",
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
         token=make_token()
     )
 
