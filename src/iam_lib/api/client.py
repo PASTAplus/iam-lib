@@ -40,7 +40,7 @@ class Client:
 
         Args:
             scheme (str): protocol scheme (http or https)
-            host (str):  host domain or address
+            host (str):  authentication host domain or address
             accept (str): accept type (JSON or XML)
             public_key_path (str): path to token signing public key
             algorithm (str): token signing algorithm
@@ -115,7 +115,7 @@ class Client:
     def response(self) -> None | requests.Response:
         return self._response
 
-    def post(self, route: str, form_params: dict) -> requests.Response:
+    def post(self, route: str, form_params: dict = None) -> requests.Response:
         """Send a POST request to the IAM REST API
 
         Args:
@@ -129,6 +129,7 @@ class Client:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
          """
+        if form_params is None: form_params = {}
         _validate_parameters(form_params, self._public_key_path, self._algorithm)
         url = self.scheme + "://" + self.host + "/" + route
         try:
@@ -144,7 +145,7 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
-    def put(self, route: str, form_params: dict) -> requests.Response:
+    def put(self, route: str, form_params: dict = None) -> requests.Response:
         """Send a PUT request to the IAM REST API
 
         Args:
@@ -158,6 +159,7 @@ class Client:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
          """
+        if form_params is None: form_params = {}
         _validate_parameters(form_params, self._public_key_path, self._algorithm)
         url = self.scheme + "://" + self.host + "/" + route
         try:
@@ -173,7 +175,7 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
-    def get(self, route: str, query_params=None) -> requests.Response:
+    def get(self, route: str, query_params: dict = None) -> requests.Response:
         """Send a GET request to the IAM REST API
 
         Args:
@@ -187,8 +189,7 @@ class Client:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
          """
-        if query_params is None:
-            query_params = {}
+        if query_params is None: query_params = {}
         url = self.scheme + "://" + self.host + "/" + route
         try:
             self._response = requests.get(
@@ -273,6 +274,7 @@ def _validate_accept(accept: str) -> str:
 def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str) -> dict:
     valid_parameters = (
         "principal",  # EDI-ID (must begin with "edi-")
+        "sub",  # EDI-ID (must begin with "edi-")
         "eml",  # EML document (XML)
         "access",  # EML access element (XML)
         "resource_key",  # Resource key (unique identifier)
