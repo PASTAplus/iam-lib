@@ -23,6 +23,7 @@ logger = daiquiri.getLogger(__name__)
 class Config:
 
     SCHEME = "https"
+    AUTH_HOST = "AUTH_HOST"
     ACCEPT = "json"
     PUBLIC_KEY_PATH = "PUBLIC_KEY_PATH"
     PRIVATE_KEY_PATH = "PRIVATE_KEY_PATH"

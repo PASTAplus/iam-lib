@@ -18,6 +18,7 @@ import daiquiri
 import jwt
 import requests
 
+from tests.config import Config
 from tests.fixtures import client, cookies, headers
 
 
@@ -25,11 +26,11 @@ logger = daiquiri.getLogger(__name__)
 
 
 def test_client(client):
-    assert client.scheme == "https"
-    assert client.host == "localhost"
-    assert client.accept == "application/json"
-    assert client.public_key_path == "./data/public_key.pem"
-    assert client.algorithm == "ES256"
+    assert Config.SCHEME.lower() == client.scheme.lower()
+    assert Config.AUTH_HOST == client.host
+    assert Config.ACCEPT.lower() in client.accept.lower()
+    assert Config.PUBLIC_KEY_PATH == client.public_key_path
+    assert Config.JWT_ALGORITHM == client.algorithm
     jwt.decode(
         client.token,
         Path(client.public_key_path).read_text().encode("utf-8"),
