@@ -42,7 +42,7 @@ class AuthorizedClient(Client):
             resource_key: str,
             permission: str
     ) -> bool:
-        """Test if principal as identified in the authentication token is authorized to access the resource at the
+        """Test if principal(s) as identified in the authentication token is authorized to access the resource at the
         given permission
 
         Args:
@@ -50,7 +50,7 @@ class AuthorizedClient(Client):
             permission (str): IAM permission (read, write, or changePermission)
 
         Returns:
-            Boolean: True if the principal is authorized to access the resource
+            Boolean: True if at least one principal is authorized to access the resource
 
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
