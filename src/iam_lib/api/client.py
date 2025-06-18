@@ -35,6 +35,7 @@ class Client:
             public_key_path: str,
             algorithm: str,
             token: str,
+            truststore: str = None,
     ):
         """Initialize client instance
 
@@ -45,6 +46,7 @@ class Client:
             public_key_path (str): path to token signing public key
             algorithm (str): token signing algorithm
             token (str): IAM JWT authentication token
+            truststore (str): path to truststore (defaults to None)
 
         Raises:
             iam_lib.exceptions.IAMInvalidScheme
@@ -60,6 +62,7 @@ class Client:
         self._public_key_path = _validate_public_key_path(public_key_path)
         self._algorithm = algorithm
         self._token = _validate_token(token, public_key_path, algorithm)
+        self._truststore = _validate_truststore(truststore)
         self._cookies = {"pasta_token": token}
         self._response = None
 
@@ -112,6 +115,14 @@ class Client:
         self._token = _validate_token(token, self._public_key_path, self._algorithm)
 
     @property
+    def truststore(self) -> str:
+        return self._truststore
+
+    @truststore.setter
+    def truststore(self, truststore: str):
+        self._truststore = _validate_truststore(truststore)
+
+    @property
     def response(self) -> None | requests.Response:
         return self._response
 
@@ -137,7 +148,8 @@ class Client:
                 url,
                 json=form_params,
                 cookies=self._cookies,
-                headers={"Accept-Type": f"{self._accept}"}
+                headers={"Accept-Type": f"{self._accept}"},
+                verify=self._truststore,
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
@@ -167,7 +179,8 @@ class Client:
                 url,
                 json=form_params,
                 cookies=self._cookies,
-                headers={"Accept-Type": f"{self._accept}"}
+                headers={"Accept-Type": f"{self._accept}"},
+                verify=self._truststore,
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
@@ -196,7 +209,8 @@ class Client:
                 url,
                 params=query_params,
                 cookies=self._cookies,
-                headers={"Accept-Type": f"{self._accept}"}
+                headers={"Accept-Type": f"{self._accept}"},
+                verify=self._truststore,
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
@@ -219,7 +233,12 @@ class Client:
          """
         url = self.scheme + "://" + self.host + "/" + route
         try:
-            self._response = requests.delete(url, cookies=self._cookies, headers={"Accept-Type": f"{self._accept}"})
+            self._response = requests.delete(
+                url,
+                cookies=self._cookies,
+                headers={"Accept-Type": f"{self._accept}"},
+                verify=self._truststore,
+            )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
         if self._response.status_code != 200:
@@ -302,3 +321,14 @@ def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str)
         if key == "token":
             _validate_token(value, public_key_path, algorithm)
     return parameters
+
+
+def _validate_truststore(truststore: str | None) -> str | bool:
+    if truststore is None:
+        return True  # Verify certificates using Python CA bundle
+    else:
+        if Path(truststore).exists() and Path(truststore).is_file():
+            return truststore
+        else:
+            msg = f"Truststore file '{truststore}' does not exist"
+            raise iam_lib.exceptions.IAMInvalidParameter(msg)
