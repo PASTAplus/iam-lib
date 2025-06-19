@@ -18,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactor "parameters" to "form_params" to align with Python requests package
 - Add configuration module to tests
 
-
 ## (0.0.5) 2025-05-29
 ### Added/Changed/Fixed
 - Update methods to rely on cookie token to identify principals
