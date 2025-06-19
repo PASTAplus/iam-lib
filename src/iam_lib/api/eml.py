@@ -33,8 +33,9 @@ class EMLClient(Client):
             public_key_path: str,
             algorithm: str,
             token: str,
+            truststore: str = None,
     ):
-        super().__init__(scheme, host, accept, public_key_path, algorithm, token)
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore)
 
     def add_eml(
             self,
