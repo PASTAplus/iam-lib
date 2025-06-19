@@ -278,7 +278,8 @@ def _validate_host(host: str) -> str:
         "auth-s.edirepository.org",
         "auth-d.edirepository.org"
     )
-    if host not in valid_hosts:
+    hostname = host.split(":")[0]  # Disregard port if specified
+    if hostname not in valid_hosts:
         msg = f"Invalid host '{host}': must be one of '{", ".join(valid_hosts)}'"
         raise iam_lib.exceptions.IAMInvalidHost(msg)
     return host
