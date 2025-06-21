@@ -40,12 +40,12 @@ class ProfileClient(Client):
 
     def create_profile(
             self,
-            principal: str,
+            idp_uid: str,
     ) -> str | dict:
         """Create profile.
 
         Args:
-            principal (str): IAM principal (user profile or group EDI-ID or IdP identifier)
+            idp_uid (str): IdP identifier
 
         Returns:
             Profile identifier (str | dict)
@@ -57,7 +57,7 @@ class ProfileClient(Client):
         """
         route = "auth/v1/profile"
         form_params = {
-            "principal": principal,
+            "idp_uid": idp_uid,
         }
         self.post(route=route, form_params=form_params)
         return response_model.response_data(self)
