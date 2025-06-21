@@ -39,7 +39,7 @@ def response_data(client: Client) -> str | dict:
         iam_lib.errors.IAMJSONDecodeError: On invalid JSON
 
     """
-    if client.accept == "JSON":
+    if client.accept == "application/json":
         try:
             return json.loads(client.response.text)
         except json.decoder.JSONDecodeError as e:
