@@ -31,7 +31,7 @@ def test_add_access(access_client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text="{'ADD_ACCESS': 'OK'}"
+        text="{\"ADD_ACCESS\": \"OK\"}"
     )
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
     access_client.add_access(
@@ -41,4 +41,4 @@ def test_add_access(access_client, cookies, headers, mocker):
         resource_type="service"
     )
     assert access_client.response.status_code == 200
-    assert access_client.response.text == "{'ADD_ACCESS': 'OK'}"
+    assert access_client.response.text == "{\"ADD_ACCESS\": \"OK\"}"

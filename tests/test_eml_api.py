@@ -35,11 +35,11 @@ def test_add_eml(eml_client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text="{'ADD_EML': 'OK'}"
+        text="{\"ADD_EML\": \"OK\"}"
     )
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
     eml_client.add_eml(
         eml="<eml></eml>"
     )
     assert eml_client.response.status_code == 200
-    assert eml_client.response.text == "{'ADD_EML': 'OK'}"
+    assert eml_client.response.text == "{\"ADD_EML\": \"OK\"}"

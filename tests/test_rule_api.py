@@ -31,7 +31,7 @@ def test_create_rule(rule_client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text="{'CREATE_RULE': 'OK'}"
+        text="{\"CREATE_RULE\": \"OK\"}"
     )
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
     rule_client.create_rule(
@@ -40,7 +40,7 @@ def test_create_rule(rule_client, cookies, headers, mocker):
         permission="write"
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.text == "{'CREATE_RULE': 'OK'}"
+    assert rule_client.response.text == "{\"CREATE_RULE\": \"OK\"}"
 
 
 def test_update_rule(rule_client, cookies, headers, mocker):
@@ -49,7 +49,7 @@ def test_update_rule(rule_client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text="{'UPDATE_RULE': 'OK'}"
+        text="{\"UPDATE_RULE\": \"OK\"}"
     )
     mocker.patch.object(requests, "put", return_value=mock_requests_response)
     rule_client.update_rule(
@@ -58,7 +58,7 @@ def test_update_rule(rule_client, cookies, headers, mocker):
         permission="write"
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.text == "{'UPDATE_RULE': 'OK'}"
+    assert rule_client.response.text == "{\"UPDATE_RULE\": \"OK\"}"
 
 
 def test_delete_rule(rule_client, cookies, headers, mocker):
@@ -67,7 +67,7 @@ def test_delete_rule(rule_client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text="{'DELETE_RULE': 'OK'}"
+        text="{\"DELETE_RULE\": \"OK\"}"
     )
     mocker.patch.object(requests, "delete", return_value=mock_requests_response)
     rule_client.delete_rule(
@@ -75,7 +75,7 @@ def test_delete_rule(rule_client, cookies, headers, mocker):
         principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced"
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.text == "{'DELETE_RULE': 'OK'}"
+    assert rule_client.response.text == "{\"DELETE_RULE\": \"OK\"}"
 
 
 def test_read_rule(rule_client, cookies, headers, mocker):
@@ -84,7 +84,7 @@ def test_read_rule(rule_client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text="{'READ_RULE': 'OK'}"
+        text="{\"READ_RULE\": \"OK\"}"
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
     rule_client.read_rule(
@@ -92,7 +92,7 @@ def test_read_rule(rule_client, cookies, headers, mocker):
         principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced"
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.text == "{'READ_RULE': 'OK'}"
+    assert rule_client.response.text == "{\"READ_RULE\": \"OK\"}"
 
 
 def test_read_principal_rules(rule_client, cookies, headers, mocker):
@@ -101,12 +101,12 @@ def test_read_principal_rules(rule_client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text="{'READ_PRINCIPAL_RULES': 'OK'}"
+        text="{\"READ_PRINCIPAL_RULES\": \"OK\"}"
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
     rule_client.read_principal_rules()
     assert rule_client.response.status_code == 200
-    assert rule_client.response.text == "{'READ_PRINCIPAL_RULES': 'OK'}"
+    assert rule_client.response.text == "{\"READ_PRINCIPAL_RULES\": \"OK\"}"
 
 
 def test_read_resource_rules(rule_client, cookies, headers, mocker):
@@ -115,12 +115,12 @@ def test_read_resource_rules(rule_client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text="{'READ_RESOURCE_RULES': 'OK'}"
+        text="{\"READ_RESOURCE_RULES\": \"OK\"}"
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
     rule_client.read_resource_rules(
         resource_key="resource_xyz",
     )
     assert rule_client.response.status_code == 200
-    assert rule_client.response.text == "{'READ_RESOURCE_RULES': 'OK'}"
+    assert rule_client.response.text == "{\"READ_RESOURCE_RULES\": \"OK\"}"
 

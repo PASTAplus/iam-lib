@@ -34,7 +34,7 @@ def test_is_authorized(authorized_client, cookies, headers, mocker):
         reason="OK",
         headers=headers,
         cookies=cookies,
-        text="{'IS_AUTHORIZED': 'OK'}"
+        text="{\"IS_AUTHORIZED\": \"OK\"}"
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
     is_authorized = authorized_client.is_authorized(
@@ -43,4 +43,4 @@ def test_is_authorized(authorized_client, cookies, headers, mocker):
     )
     assert is_authorized is True
     assert authorized_client.response.status_code == 200
-    assert authorized_client.response.text == "{'IS_AUTHORIZED': 'OK'}"
+    assert authorized_client.response.text == "{\"IS_AUTHORIZED\": \"OK\"}"
