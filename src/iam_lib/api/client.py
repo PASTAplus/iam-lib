@@ -293,7 +293,7 @@ def _validate_accept(accept: str) -> str:
 
 def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str) -> dict:
     valid_parameters = (
-        "principal",  # EDI-ID (must begin with "edi-")
+        "idp_uid",  # Identity provider unique identifier
         "sub",  # EDI-ID (must begin with "edi-")
         "eml",  # EML document (XML)
         "access",  # EML access element (XML)
