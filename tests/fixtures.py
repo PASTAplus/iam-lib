@@ -30,6 +30,9 @@ from tests.config import Config
 from tests.utilities import make_token
 
 
+TOKEN = make_token("EDI-221c782cc3c84fcba888fadd7cbe708a")
+
+
 @pytest.fixture(scope="function")
 def client():
     return Client(
@@ -38,7 +41,7 @@ def client():
         accept=Config.ACCEPT,
         public_key_path=Config.PUBLIC_KEY_PATH,
         algorithm=Config.JWT_ALGORITHM,
-        token=make_token()
+        token=TOKEN
     )
 
 
@@ -50,7 +53,7 @@ def access_client():
         accept=Config.ACCEPT,
         public_key_path=Config.PUBLIC_KEY_PATH,
         algorithm=Config.JWT_ALGORITHM,
-        token=make_token()
+        token=TOKEN
     )
 
 
@@ -62,7 +65,7 @@ def authorized_client():
         accept=Config.ACCEPT,
         public_key_path=Config.PUBLIC_KEY_PATH,
         algorithm=Config.JWT_ALGORITHM,
-        token=make_token()
+        token=TOKEN
     )
 
 
@@ -74,7 +77,7 @@ def edi_token_client():
         accept=Config.ACCEPT,
         public_key_path=Config.PUBLIC_KEY_PATH,
         algorithm=Config.JWT_ALGORITHM,
-        token=make_token()
+        token=TOKEN
     )
 
 
@@ -86,7 +89,7 @@ def eml_client():
         accept=Config.ACCEPT,
         public_key_path=Config.PUBLIC_KEY_PATH,
         algorithm=Config.JWT_ALGORITHM,
-        token=make_token()
+        token=TOKEN
     )
 
 
@@ -98,7 +101,7 @@ def profile_client():
         accept=Config.ACCEPT,
         public_key_path=Config.PUBLIC_KEY_PATH,
         algorithm=Config.JWT_ALGORITHM,
-        token=make_token()
+        token=TOKEN
     )
 
 
@@ -110,7 +113,7 @@ def resource_client():
         accept=Config.ACCEPT,
         public_key_path=Config.PUBLIC_KEY_PATH,
         algorithm=Config.JWT_ALGORITHM,
-        token=make_token()
+        token=TOKEN
     )
 
 
@@ -122,7 +125,7 @@ def rule_client():
         accept=Config.ACCEPT,
         public_key_path=Config.PUBLIC_KEY_PATH,
         algorithm=Config.JWT_ALGORITHM,
-        token=make_token()
+        token=TOKEN
     )
 
 
@@ -131,7 +134,7 @@ def cookies():
     cookies = RequestsCookieJar()
     cookies.set(
         name="pasta_token",
-        value=f"{make_token()}",
+        value=f"{TOKEN}",
         domain="edirepository.org"
     )
     return cookies
