@@ -26,10 +26,10 @@ from tests.config import Config
 logger = daiquiri.getLogger(__name__)
 
 
-def make_token() -> str:
+def make_token(sub: str) -> str:
     now = datetime.now(tz=timezone.utc)
     payload = {
-        "sub": "EDI-3fa734a7cd6e40998a5c2b5486b6eced",
+        "sub": f"{sub}",
         "cn": None,
         "email": None,
         "gn": None,
