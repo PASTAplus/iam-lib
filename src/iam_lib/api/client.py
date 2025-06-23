@@ -19,6 +19,7 @@ import jwt
 
 import iam_lib.exceptions
 import iam_lib.token
+from iam_lib.models.permission import Permission
 
 
 logger = daiquiri.getLogger(__name__)
@@ -294,6 +295,7 @@ def _validate_accept(accept: str) -> str:
 def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str) -> dict:
     valid_parameters = (
         "idp_uid",  # Identity provider unique identifier
+        "principal", # Identity of access control rule principal subject
         "sub",  # EDI-ID (must begin with "edi-")
         "eml",  # EML document (XML)
         "access",  # EML access element (XML)
@@ -316,7 +318,7 @@ def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str)
                 msg = f"Invalid keyword argument for '{key}': value '{value}' must be True or False"
                 raise iam_lib.exceptions.IAMInvalidParameter(msg)
         if key == "permission":
-            if value not in ("read", "write", "changePermission"):
+            if value not in Permission:
                 msg = f"Invalid keyword argument for 'permission': value '{value}' must be 'read', 'write', or 'changePermission'"
                 raise iam_lib.exceptions.IAMInvalidParameter(msg)
         if key == "token":
