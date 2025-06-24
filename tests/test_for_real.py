@@ -21,7 +21,7 @@ from tests.config import Config
 from tests.utilities import make_token
 
 
-def test_create_profile():
+def test_create_data_package():
     client_token = make_token("EDI-376d4d3e43554771a1dd0a0c52050508")
     profile_client = ProfileClient(
         scheme=Config.SCHEME,
@@ -67,7 +67,7 @@ def test_create_profile():
 
     resource_client.create_resource(
         resource_key = "http://localhost:8088/package/metadata/eml/edi/1790/1",
-        resource_label = "Level-1-EML",
+        resource_label = "EML Metadata",
         resource_type = "metadata",
         parent_resource_key = metadata_collection_key
     )
