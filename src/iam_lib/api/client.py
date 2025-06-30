@@ -37,6 +37,7 @@ class Client:
             algorithm: str,
             token: str,
             truststore: str = None,
+            timeout: int = 10,
     ):
         """Initialize client instance
 
@@ -48,6 +49,7 @@ class Client:
             algorithm (str): token signing algorithm
             token (str): IAM JWT authentication token
             truststore (str): path to truststore (defaults to None)
+            timeout (int): request timeout to IAM service (defaults to 10 seconds)
 
         Raises:
             iam_lib.exceptions.IAMInvalidScheme
@@ -64,6 +66,7 @@ class Client:
         self._algorithm = algorithm
         self._token = _validate_token(token, public_key_path, algorithm)
         self._truststore = _validate_truststore(truststore)
+        self._timeout = timeout
         self._cookies = {"pasta_token": token}
         self._response = None
 
@@ -151,6 +154,7 @@ class Client:
                 cookies=self._cookies,
                 headers={"Accept-Type": f"{self._accept}"},
                 verify=self._truststore,
+                timeout=self._timeout,
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
@@ -182,6 +186,7 @@ class Client:
                 cookies=self._cookies,
                 headers={"Accept-Type": f"{self._accept}"},
                 verify=self._truststore,
+                timeout=self._timeout,
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
@@ -212,6 +217,7 @@ class Client:
                 cookies=self._cookies,
                 headers={"Accept-Type": f"{self._accept}"},
                 verify=self._truststore,
+                timeout=self._timeout,
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
@@ -239,6 +245,7 @@ class Client:
                 cookies=self._cookies,
                 headers={"Accept-Type": f"{self._accept}"},
                 verify=self._truststore,
+                timeout=self._timeout,
             )
         except requests.exceptions.RequestException as e:
             raise iam_lib.exceptions.IAMRequestError(e)
