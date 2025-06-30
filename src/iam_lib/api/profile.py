@@ -27,16 +27,17 @@ class ProfileClient(Client):
     """IAM Profile client class"""
 
     def __init__(
-            self,
-            scheme: str,
-            host: str,
-            accept: str,
-            public_key_path: str,
-            algorithm: str,
-            token: str,
-            truststore: str = None,
+        self,
+        scheme: str,
+        host: str,
+        accept: str,
+        public_key_path: str,
+        algorithm: str,
+        token: str,
+        truststore: str = None,
+        timeout: int = 10,
     ):
-        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore)
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore, timeout)
 
     def create_profile(
             self,
@@ -64,11 +65,11 @@ class ProfileClient(Client):
 
 
     def update_profile(
-            self,
-            edi_identifier: str,
-            given_name: str,
-            family_name: str,
-            email: str
+        self,
+        edi_identifier: str,
+        given_name: str,
+        family_name: str,
+        email: str
     ) -> None:
         """Update profile.
 
@@ -95,8 +96,8 @@ class ProfileClient(Client):
         return None
 
     def delete_profile(
-            self,
-            edi_identifier: str,
+        self,
+        edi_identifier: str,
     ) -> None:
         """Delete profile.
 
@@ -114,10 +115,9 @@ class ProfileClient(Client):
         self.delete(route=route)
         return None
 
-
-    def read_profile (
-            self,
-            edi_identifier: str,
+    def read_profile(
+        self,
+        edi_identifier: str,
     ) -> str | dict:
         """Read profile.
 

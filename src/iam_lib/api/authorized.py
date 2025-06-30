@@ -27,21 +27,22 @@ class AuthorizedClient(Client):
     """IAM Authorized client class"""
 
     def __init__(
-            self,
-            scheme: str,
-            host: str,
-            accept: str,
-            public_key_path: str,
-            algorithm: str,
-            token: str,
-            truststore: str = None,
+        self,
+        scheme: str,
+        host: str,
+        accept: str,
+        public_key_path: str,
+        algorithm: str,
+        token: str,
+        truststore: str = None,
+        timeout: int = 10,
     ):
-        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore)
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore, timeout)
 
     def is_authorized(
-            self,
-            resource_key: str,
-            permission: str
+        self,
+        resource_key: str,
+        permission: str
     ) -> bool:
         """Test if principal(s) as identified in the authentication token is authorized to access the resource at the
         given permission
@@ -67,4 +68,3 @@ class AuthorizedClient(Client):
         except IAMResponseError as e:
             logger.error(e)
             return False
-

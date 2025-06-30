@@ -18,7 +18,6 @@ import daiquiri
 
 from iam_lib.api.client import Client
 
-
 logger = daiquiri.getLogger(__name__)
 
 
@@ -26,20 +25,21 @@ class EMLClient(Client):
     """IAM EML client class"""
 
     def __init__(
-            self,
-            scheme: str,
-            host: str,
-            accept: str,
-            public_key_path: str,
-            algorithm: str,
-            token: str,
-            truststore: str = None,
+        self,
+        scheme: str,
+        host: str,
+        accept: str,
+        public_key_path: str,
+        algorithm: str,
+        token: str,
+        truststore: str = None,
+        timeout: int = 10,
     ):
-        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore)
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore, timeout)
 
     def add_eml(
-            self,
-            eml: str
+        self,
+        eml: str
     ) -> None:
         """To parse a valid EML document and add its ACRs to the ACR registry for the resources identified in the EML
         document

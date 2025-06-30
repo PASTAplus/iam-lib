@@ -21,30 +21,30 @@ from iam_lib.api.client import Client
 from iam_lib.models.permission import Permission
 import iam_lib.models.response_model as response_model
 
-
 logger = daiquiri.getLogger(__name__)
 
 
 class RuleClient(Client):
     """IAM Rule client class"""
-    
+
     def __init__(
-            self,
-            scheme: str,
-            host: str,
-            accept: str,
-            public_key_path: str,
-            algorithm: str,
-            token: str,
-            truststore: str = None,
+        self,
+        scheme: str,
+        host: str,
+        accept: str,
+        public_key_path: str,
+        algorithm: str,
+        token: str,
+        truststore: str = None,
+        timeout: int = 10,
     ):
-        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore)
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore, timeout)
 
     def create_rule(
-            self,
-            resource_key: str,
-            principal: str,
-            permission: Permission
+        self,
+        resource_key: str,
+        principal: str,
+        permission: Permission
     ) -> None:
         """Create rule.
         Args:
@@ -68,13 +68,12 @@ class RuleClient(Client):
         }
         self.post(route=route, form_params=form_params)
         return None
-    
-    
+
     def update_rule(
-            self,
-            resource_key: str,
-            principal: str,
-            permission: Permission,
+        self,
+        resource_key: str,
+        principal: str,
+        permission: Permission,
     ) -> None:
         """Update rule.
     
@@ -96,12 +95,11 @@ class RuleClient(Client):
         }
         self.put(route=route, form_params=form_params)
         return None
-    
-    
+
     def delete_rule(
-            self,
-            resource_key: str,
-            principal: str,
+        self,
+        resource_key: str,
+        principal: str,
     ) -> None:
         """Delete rule.
     
@@ -119,12 +117,11 @@ class RuleClient(Client):
         route = f"auth/v1/rule/{resource_key}/{principal}"
         self.delete(route=route)
         return None
-    
-    
+
     def read_rule(
-            self,
-            resource_key: str,
-            principal: str,
+        self,
+        resource_key: str,
+        principal: str,
     ) -> str | dict:
         """Read rule.
     
@@ -143,10 +140,9 @@ class RuleClient(Client):
         route = f"auth/v1/rule/{resource_key}/{principal}"
         self.get(route=route)
         return response_model.response_data(self)
-    
-    
+
     def read_principal_rules(
-            self
+        self
     ) -> str | dict:
         """Read rules associated with principal(s) who has changePermission.
     
@@ -161,11 +157,10 @@ class RuleClient(Client):
         route = f"auth/v1/rules/principal"
         self.get(route=route)
         return response_model.response_data(self)
-    
-    
+
     def read_resource_rules(
-            self,
-            resource_key: str,
+        self,
+        resource_key: str,
     ) -> str | dict:
         """Read rules associated with a resource.
     

@@ -19,7 +19,6 @@ import daiquiri
 from iam_lib.api.client import Client
 import iam_lib.models.response_model as response_model
 
-
 logger = daiquiri.getLogger(__name__)
 
 
@@ -27,23 +26,24 @@ class ResourceClient(Client):
     """IAM Resource client class"""
 
     def __init__(
-            self,
-            scheme: str,
-            host: str,
-            accept: str,
-            public_key_path: str,
-            algorithm: str,
-            token: str,
-            truststore: str = None,
+        self,
+        scheme: str,
+        host: str,
+        accept: str,
+        public_key_path: str,
+        algorithm: str,
+        token: str,
+        truststore: str = None,
+        timeout: int = 10,
     ):
-        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore)
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore, timeout)
 
     def create_resource(
-            self,
-            resource_key: str,
-            resource_label: str,
-            resource_type: str,
-            parent_resource_key: str = None
+        self,
+        resource_key: str,
+        resource_label: str,
+        resource_type: str,
+        parent_resource_key: str = None
     ) -> None:
         """Create resource.
 
@@ -70,13 +70,12 @@ class ResourceClient(Client):
         self.post(route=route, form_params=form_params)
         return None
 
-
     def update_resource(
-            self,
-            resource_key: str,
-            resource_label: str,
-            resource_type: str,
-            parent_resource_key: str = None
+        self,
+        resource_key: str,
+        resource_label: str,
+        resource_type: str,
+        parent_resource_key: str = None
     ) -> None:
         """Update resource.
 
@@ -103,8 +102,8 @@ class ResourceClient(Client):
         return None
 
     def delete_resource(
-            self,
-            resource_key: str
+        self,
+        resource_key: str
     ) -> None:
         """Delete resource.
 
@@ -122,13 +121,12 @@ class ResourceClient(Client):
         self.delete(route=route)
         return None
 
-
     def read_resource(
-            self,
-            resource_key: str,
-            descendants: bool = False,
-            ancestors: bool = False,
-            all: bool = False
+        self,
+        resource_key: str,
+        descendants: bool = False,
+        ancestors: bool = False,
+        all: bool = False
     ) -> str | dict:
         """Read resource (optional tree).
 
@@ -155,9 +153,8 @@ class ResourceClient(Client):
         self.get(route=route, query_params=query_params)
         return response_model.response_data(self)
 
-
     def read_resources(
-            self,
+        self,
     ) -> str | dict:
         """Read resources of EDI Token subject.
 

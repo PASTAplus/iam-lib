@@ -18,7 +18,6 @@ import daiquiri
 
 from iam_lib.api.client import Client
 
-
 logger = daiquiri.getLogger(__name__)
 
 
@@ -26,24 +25,24 @@ class AccessClient(Client):
     """IAM Access Client class"""
 
     def __init__(
-            self,
-            scheme: str,
-            host: str,
-            accept: str,
-            public_key_path: str,
-            algorithm: str,
-            token: str,
-            truststore: str = None,
+        self,
+        scheme: str,
+        host: str,
+        accept: str,
+        public_key_path: str,
+        algorithm: str,
+        token: str,
+        truststore: str = None,
+        timeout: int = 10,
     ):
-        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore)
-
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore, timeout)
 
     def add_access(
-            self,
-            access: str,
-            resource_key: str,
-            resource_label: str,
-            resource_type: str
+        self,
+        access: str,
+        resource_key: str,
+        resource_label: str,
+        resource_type: str
     ) -> None:
         """To parse a valid EML access element and add its ACRs to the ACR registry for the resource identified by
         the resource key.

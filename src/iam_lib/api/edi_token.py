@@ -19,28 +19,28 @@ import daiquiri
 from iam_lib.api.client import Client
 import iam_lib.models.response_model as response_model
 
-
 logger = daiquiri.getLogger(__name__)
 
 
 class EdiTokenClient(Client):
     """IAM EDI Token client class"""
-    
+
     def __init__(
-            self,
-            scheme: str,
-            host: str,
-            accept: str,
-            public_key_path: str,
-            algorithm: str,
-            token: str,
-            truststore: str = None,
+        self,
+        scheme: str,
+        host: str,
+        accept: str,
+        public_key_path: str,
+        algorithm: str,
+        token: str,
+        truststore: str = None,
+        timeout: int = 10,
     ):
-        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore)
+        super().__init__(scheme, host, accept, public_key_path, algorithm, token, truststore, timeout)
 
     def create_token(
-            self,
-            sub: str,
+        self,
+        sub: str,
     ) -> str:
         """Create token.
         Args:
@@ -60,11 +60,10 @@ class EdiTokenClient(Client):
         }
         self.post(route=route, form_params=form_params)
         return response_model.response_data(self)
-    
-    
+
     def revoke_token(
-            self,
-            sub: str
+        self,
+        sub: str
     ) -> None:
         """Revoke token.
     
@@ -81,11 +80,10 @@ class EdiTokenClient(Client):
         route = f"auth/v1/token/{sub}"
         self.put(route=route)
         return None
-    
-    
+
     def lock_token(
-            self,
-            sub: str
+        self,
+        sub: str
     ) -> None:
         """Lock tokens from being created.
     
