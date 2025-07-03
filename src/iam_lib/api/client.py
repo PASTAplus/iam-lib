@@ -12,6 +12,8 @@
 
 """
 from pathlib import Path
+import time
+from functools import wraps
 
 import daiquiri
 import requests
@@ -23,6 +25,22 @@ from iam_lib.models.permission import Permission
 
 
 logger = daiquiri.getLogger(__name__)
+
+
+def retry_connection(retries=3, delay=5):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            for i in range(retries):
+                try:
+                    return func(*args, **kwargs)
+                except iam_lib.exceptions.IAMRequestError as e:
+                    logger.warning(f"Connection failed: {e}. Retrying in {delay} seconds...")
+                    time.sleep(delay)
+            logger.error("Connection failed after multiple retries")
+            raise iam_lib.exceptions.IAMRequestError("Connection failed after multiple retries")
+        return wrapper
+    return decorator
 
 
 class Client:
@@ -130,6 +148,7 @@ class Client:
     def response(self) -> None | requests.Response:
         return self._response
 
+    @retry_connection()
     def post(self, route: str, form_params: dict = None) -> requests.Response:
         """Send a POST request to the IAM REST API
 
@@ -162,6 +181,7 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
+    @retry_connection()
     def put(self, route: str, form_params: dict = None) -> requests.Response:
         """Send a PUT request to the IAM REST API
 
@@ -194,6 +214,7 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
+    @retry_connection()
     def get(self, route: str, query_params: dict = None) -> requests.Response:
         """Send a GET request to the IAM REST API
 
@@ -225,6 +246,7 @@ class Client:
             raise iam_lib.exceptions.IAMResponseError(self._response)
         return self._response
 
+    @retry_connection()
     def delete(self, route: str) -> requests.Response:
         """Send a DELETE request to the IAM REST API
 
