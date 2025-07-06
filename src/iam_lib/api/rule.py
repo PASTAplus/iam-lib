@@ -16,9 +16,8 @@
 """
 import daiquiri
 
-import iam_lib.models.permission
 from iam_lib.api.client import Client
-from iam_lib.models.permission import Permission
+from iam_lib.models.permission import Permission, PERMISSION_MAP
 import iam_lib.models.response_model as response_model
 
 logger = daiquiri.getLogger(__name__)
@@ -64,7 +63,7 @@ class RuleClient(Client):
         form_params = {
             "resource_key": resource_key,
             "principal": principal,
-            "permission": permission.value,
+            "permission": PERMISSION_MAP[permission.value]
         }
         self.post(route=route, form_params=form_params)
         return None
@@ -91,7 +90,7 @@ class RuleClient(Client):
         """
         route = f"auth/v1/rule/{resource_key}/{principal}"
         form_params = {
-            "permission": permission.value
+            "permission": PERMISSION_MAP[permission.value]
         }
         self.put(route=route, form_params=form_params)
         return None
