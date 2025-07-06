@@ -18,7 +18,7 @@ import daiquiri
 logger = daiquiri.getLogger(__name__)
 
 
-PERMISSION_MAP = ["none", "read", "write", "changePermission"]
+PERMISSION_MAP = ("none", "read", "write", "changePermission")
 
 
 class Permission(Flag):
