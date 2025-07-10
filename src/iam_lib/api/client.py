@@ -85,7 +85,7 @@ class Client:
         self._token = _validate_token(token, public_key_path, algorithm)
         self._truststore = _validate_truststore(truststore)
         self._timeout = timeout
-        self._cookies = {"pasta_token": token}
+        self._cookies = {"edi-token": token}
         self._response = None
 
     @property
