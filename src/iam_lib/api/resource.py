@@ -44,7 +44,7 @@ class ResourceClient(Client):
         resource_label: str,
         resource_type: str,
         parent_resource_key: str = None
-    ) -> None:
+    ) -> str | dict:
         """Create resource.
 
         Args:
@@ -54,11 +54,12 @@ class ResourceClient(Client):
             parent_resource_key (str): unique identifier for the parent resource if exists; otherwise None
 
         Returns:
-            None
+            Response object (str | dict)
 
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
         route = "auth/v1/resource"
         form_params = {
@@ -68,7 +69,7 @@ class ResourceClient(Client):
             "parent_resource_key": parent_resource_key
         }
         self.post(route=route, form_params=form_params)
-        return None
+        return response_model.response_data(self)
 
     def update_resource(
         self,
@@ -76,8 +77,8 @@ class ResourceClient(Client):
         resource_label: str,
         resource_type: str,
         parent_resource_key: str = None
-    ) -> None:
-        """Update resource.
+    ) -> str | dict:
+        """Update resource. Update resource details.
 
         Args:
             resource_key (str): unique identifier for the resource
@@ -91,6 +92,7 @@ class ResourceClient(Client):
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
         route = f"auth/v1/resource/{resource_key}"
         form_params = {
@@ -99,27 +101,28 @@ class ResourceClient(Client):
             "parent_resource_key": parent_resource_key
         }
         self.put(route=route, form_params=form_params)
-        return None
+        return response_model.response_data(self)
 
     def delete_resource(
         self,
         resource_key: str
-    ) -> None:
+    ) -> str | dict:
         """Delete resource.
 
         Args:
             resource_key (str): unique identifier for the resource
 
          Returns:
-            None
+            Response object (str | dict)
 
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
         route = f"auth/v1/resource/{resource_key}"
         self.delete(route=route)
-        return None
+        return response_model.response_data(self)
 
     def read_resource(
         self,
@@ -128,7 +131,7 @@ class ResourceClient(Client):
         ancestors: bool = False,
         all: bool = False
     ) -> str | dict:
-        """Read resource (optional tree).
+        """Read resource (optional tree). Returns resource details, including tree structure.
 
         Args:
             resource_key (str): unique identifier for the resource
@@ -162,7 +165,7 @@ class ResourceClient(Client):
             None
 
          Returns:
-            resources (str | dict)
+            Response object (str | dict)
 
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error

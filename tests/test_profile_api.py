@@ -51,7 +51,7 @@ def test_update_profile(profile_client, cookies, headers, mocker):
     )
     mocker.patch.object(requests, "put", return_value=mock_requests_response)
     profile_client.update_profile(
-        edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
+        profile_edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
         given_name="Jack",
         family_name="Black",
         email="jack.black@email.com"
@@ -70,7 +70,7 @@ def test_delete_profile(profile_client, cookies, headers, mocker):
     )
     mocker.patch.object(requests, "delete", return_value=mock_requests_response)
     profile_client.delete_profile(
-        edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
+        profile_edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
     )
     assert profile_client.response.status_code == 200
     assert profile_client.response.text == "{\"DELETE_PROFILE\": \"OK\"}"
@@ -86,7 +86,7 @@ def test_read_profile(profile_client, cookies, headers, mocker):
     )
     mocker.patch.object(requests, "get", return_value=mock_requests_response)
     profile_client.read_profile(
-        edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
+        profile_edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
     )
     assert profile_client.response.status_code == 200
     assert profile_client.response.text == "{\"READ_PROFILE\": \"OK\"}"

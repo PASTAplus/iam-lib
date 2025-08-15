@@ -35,7 +35,7 @@ def test_create_token(edi_token_client, cookies, headers, mocker):
     )
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
     edi_token_client.create_token(
-        sub="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
+        profile_edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
     )
     assert edi_token_client.response.status_code == 200
     assert edi_token_client.response.text == "{\"CREATE_TOKEN\": \"OK\"}"
@@ -51,7 +51,7 @@ def test_revoke_token(edi_token_client, cookies, headers, mocker):
     )
     mocker.patch.object(requests, "put", return_value=mock_requests_response)
     edi_token_client.revoke_token(
-        sub="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
+        profile_edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
     )
     assert edi_token_client.response.status_code == 200
     assert edi_token_client.response.text == "{\"REVOKE_TOKEN\": \"OK\"}"
@@ -67,7 +67,7 @@ def test_lock_token(edi_token_client, cookies, headers, mocker):
     )
     mocker.patch.object(requests, "delete", return_value=mock_requests_response)
     edi_token_client.lock_token(
-        sub="EDI-3fa734a7cd6e40998a5c2b5486b6eced"
+        profile_edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced"
     )
     assert edi_token_client.response.status_code == 200
     assert edi_token_client.response.text == "{\"LOCK_TOKEN\": \"OK\"}"

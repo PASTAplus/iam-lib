@@ -44,7 +44,7 @@ class RuleClient(Client):
         resource_key: str,
         principal: str,
         permission: Permission
-    ) -> None:
+    ) -> str | dict:
         """Create rule.
         Args:
             resource_key (str): unique identifier for the resource
@@ -57,7 +57,7 @@ class RuleClient(Client):
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
-    
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
         route = "auth/v1/rule"
         form_params = {
@@ -66,14 +66,14 @@ class RuleClient(Client):
             "permission": PERMISSION_MAP[permission.value]
         }
         self.post(route=route, form_params=form_params)
-        return None
+        return response_model.response_data(self)
 
     def update_rule(
         self,
         resource_key: str,
         principal: str,
         permission: Permission,
-    ) -> None:
+    ) -> str | dict:
         """Update rule.
     
         Args:
@@ -87,19 +87,20 @@ class RuleClient(Client):
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
         route = f"auth/v1/rule/{resource_key}/{principal}"
         form_params = {
             "permission": PERMISSION_MAP[permission.value]
         }
         self.put(route=route, form_params=form_params)
-        return None
+        return response_model.response_data(self)
 
     def delete_rule(
         self,
         resource_key: str,
         principal: str,
-    ) -> None:
+    ) -> str:
         """Delete rule.
     
         Args:
@@ -112,10 +113,11 @@ class RuleClient(Client):
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
         route = f"auth/v1/rule/{resource_key}/{principal}"
         self.delete(route=route)
-        return None
+        return response_model.response_data(self)
 
     def read_rule(
         self,

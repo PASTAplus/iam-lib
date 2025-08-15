@@ -43,13 +43,13 @@ class ProfileClient(Client):
             self,
             idp_uid: str,
     ) -> str | dict:
-        """Create profile.
+        """Create profile. Returns new IAM profile edi identifier.
 
         Args:
             idp_uid (str): IdP identifier
 
         Returns:
-            Profile identifier (str | dict)
+            Response object (str | dict)
 
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
@@ -66,72 +66,74 @@ class ProfileClient(Client):
 
     def update_profile(
         self,
-        edi_identifier: str,
+        profile_edi_identifier: str,
         given_name: str,
         family_name: str,
         email: str
-    ) -> None:
+    ) -> str | dict:
         """Update profile.
 
         Args:
-            edi_identifier (str): IAM edi identifier
+            profile_edi_identifier (str): IAM profile edi identifier
             given_name (str): IAM user given name
             family_name (str): IAM user family name
             email (str): IAM user preferred email
 
         Returns:
-            None
-
-        Raises:
-            iam_lib.exceptions.IAMRequestError: On HTTP request error
-            iam_lib.exceptions.IAMResponseError: On non-200 response
-        """
-        route = f"auth/v1/profile/{edi_identifier}"
-        form_params = {
-            "given_name": given_name,
-            "family_name": family_name,
-            "email": email
-        }
-        self.put(route=route, form_params=form_params)
-        return None
-
-    def delete_profile(
-        self,
-        edi_identifier: str,
-    ) -> None:
-        """Delete profile.
-
-        Args:
-            edi_identifier (str): IAM edi identifier
-
-         Returns:
-            None
-
-        Raises:
-            iam_lib.exceptions.IAMRequestError: On HTTP request error
-            iam_lib.exceptions.IAMResponseError: On non-200 response
-        """
-        route = f"auth/v1/profile/{edi_identifier}"
-        self.delete(route=route)
-        return None
-
-    def read_profile(
-        self,
-        edi_identifier: str,
-    ) -> str | dict:
-        """Read profile.
-
-        Args:
-            edi_identifier (str): IAM edi identifier
-
-         Returns:
-            profile (str | dict)
+            Response object (str | dict)
 
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
             iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
-        route = f"auth/v1/resource/{edi_identifier}"
+        route = f"auth/v1/profile/{profile_edi_identifier}"
+        form_params = {
+            "given_name": given_name,
+            "family_name": family_name,
+            "email": email
+        }
+        self.put(route=route, form_params=form_params)
+        return response_model.response_data(self)
+
+    def delete_profile(
+        self,
+        profile_edi_identifier: str,
+    ) -> str | dict:
+        """Delete profile.
+
+        Args:
+            profile_edi_identifier (str): IAM profile edi identifier
+
+         Returns:
+            Response object (str | dict)
+
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
+        """
+        route = f"auth/v1/profile/{profile_edi_identifier}"
+        self.delete(route=route)
+        return response_model.response_data(self)
+
+    def read_profile(
+        self,
+        profile_edi_identifier: str,
+    ) -> str | dict:
+        """Read profile. Returns profile details.
+
+        Args:
+            profile_edi_identifier (str): IAM edi identifier
+
+         Returns:
+            Response object (str | dict)
+
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
+        """
+        route = f"auth/v1/resource/{profile_edi_identifier}"
         self.get(route=route)
         return response_model.response_data(self)

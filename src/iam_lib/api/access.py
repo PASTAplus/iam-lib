@@ -17,6 +17,7 @@
 import daiquiri
 
 from iam_lib.api.client import Client
+import iam_lib.models.response_model as response_model
 
 logger = daiquiri.getLogger(__name__)
 
@@ -43,7 +44,7 @@ class AccessClient(Client):
         resource_key: str,
         resource_label: str,
         resource_type: str
-    ) -> None:
+    ) -> str | dict:
         """To parse a valid EML access element and add its ACRs to the ACR registry for the resource identified by
         the resource key.
 
@@ -54,7 +55,7 @@ class AccessClient(Client):
             resource_type (str): type of resource
 
         Returns:
-            None
+            Response object (str | dict)
 
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
@@ -68,4 +69,4 @@ class AccessClient(Client):
             "resource_type": resource_type,
         }
         self.post(route=route, form_params=form_params)
-        return None
+        return response_model.response_data(self)

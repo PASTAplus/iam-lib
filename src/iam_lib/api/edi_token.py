@@ -40,55 +40,56 @@ class EdiTokenClient(Client):
 
     def create_token(
         self,
-        sub: str,
-    ) -> str:
-        """Create token.
+        profile_edi_identifier: str,
+    ) -> str | dict:
+        """Create token. Returns JWT base64 digitally signed token.
         Args:
-            sub (str): subject's unique EDI profile identifier
+            profile_edi_identifier (str): Profile IAM edi identifier
 
         Returns:
-            edi_token (str): JWT base64 digitally signed token
+            Response object (str | dict)
     
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
-    
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
         route = "auth/v1/token"
         form_params = {
-            "sub": sub,
+            "sub": profile_edi_identifier,
         }
         self.post(route=route, form_params=form_params)
         return response_model.response_data(self)
 
     def revoke_token(
         self,
-        sub: str
-    ) -> None:
+        profile_edi_identifier: str
+    ) -> str | dict:
         """Revoke token.
     
         Args:
-            sub (str): subject's unique EDI profile identifier
+            profile_edi_identifier (str): Profile IAM edi identifier
 
         Returns:
-            None
+            Response object (str | dict)
     
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
-        route = f"auth/v1/token/{sub}"
+        route = f"auth/v1/token/{profile_edi_identifier}"
         self.put(route=route)
-        return None
+        return response_model.response_data(self)
 
     def lock_token(
         self,
-        sub: str
-    ) -> None:
+        profile_edi_identifier: str
+    ) -> str | dict:
         """Lock tokens from being created.
     
         Args:
-            sub (str): subject's unique EDI profile identifier
+            profile_edi_identifier (str): Profile IAM edi identifier
     
         Returns:
             None
@@ -96,7 +97,8 @@ class EdiTokenClient(Client):
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
-        route = f"auth/v1/token/{sub}"
+        route = f"auth/v1/token/{profile_edi_identifier}"
         self.delete(route=route)
-        return None
+        return response_model.response_data(self)

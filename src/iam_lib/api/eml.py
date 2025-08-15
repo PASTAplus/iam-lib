@@ -17,6 +17,8 @@
 import daiquiri
 
 from iam_lib.api.client import Client
+import iam_lib.models.response_model as response_model
+
 
 logger = daiquiri.getLogger(__name__)
 
@@ -40,23 +42,24 @@ class EMLClient(Client):
     def add_eml(
         self,
         eml: str
-    ) -> None:
-        """To parse a valid EML document and add its ACRs to the ACR registry for the resources identified in the EML
-        document
+    ) -> str | dict:
+        """Add EML. To parse a valid EML document and add its ACRs to the ACR registry for the resources identified in
+           the EML document.
 
         Args:
             eml (str): valid EML document
 
         Returns:
-            None
+            Response object (str | dict)
 
         Raises:
             iam_lib.exceptions.IAMRequestError: On HTTP request error
             iam_lib.exceptions.IAMResponseError: On non-200 response
-        """
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
+"""
         route = "auth/v1/eml"
         form_params = {
             "eml": eml,
         }
         self.post(route=route, form_params=form_params)
-        return None
+        return response_model.response_data(self)

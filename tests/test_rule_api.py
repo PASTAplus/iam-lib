@@ -19,6 +19,7 @@ from unittest.mock import MagicMock
 import daiquiri
 import requests
 
+from iam_lib.models.permission import Permission, PERMISSION_MAP
 from tests.fixtures import rule_client, cookies, headers
 
 
@@ -37,7 +38,7 @@ def test_create_rule(rule_client, cookies, headers, mocker):
     rule_client.create_rule(
         resource_key="resource_xyz",
         principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
-        permission="write"
+        permission=Permission(PERMISSION_MAP.index("write"))
     )
     assert rule_client.response.status_code == 200
     assert rule_client.response.text == "{\"CREATE_RULE\": \"OK\"}"
@@ -55,7 +56,7 @@ def test_update_rule(rule_client, cookies, headers, mocker):
     rule_client.update_rule(
         resource_key="resource_xyz",
         principal="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
-        permission="write"
+        permission=Permission(PERMISSION_MAP.index("write"))
     )
     assert rule_client.response.status_code == 200
     assert rule_client.response.text == "{\"UPDATE_RULE\": \"OK\"}"
