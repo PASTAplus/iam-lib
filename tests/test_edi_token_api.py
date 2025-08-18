@@ -36,6 +36,7 @@ def test_create_token(edi_token_client, cookies, headers, mocker):
     mocker.patch.object(requests, "post", return_value=mock_requests_response)
     edi_token_client.create_token(
         profile_edi_identifier="EDI-3fa734a7cd6e40998a5c2b5486b6eced",
+        key="key"
     )
     assert edi_token_client.response.status_code == 200
     assert edi_token_client.response.text == "{\"CREATE_TOKEN\": \"OK\"}"

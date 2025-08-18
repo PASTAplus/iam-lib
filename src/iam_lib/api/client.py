@@ -338,6 +338,7 @@ def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str)
         "given_name",  # Given name
         "family_name",  # Family name
         "email",  # Email address
+        "key"  # Authentication key
     )
     for key,value in parameters.items():
         if key not in valid_parameters:

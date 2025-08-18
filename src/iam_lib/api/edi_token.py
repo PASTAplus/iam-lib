@@ -41,10 +41,12 @@ class EdiTokenClient(Client):
     def create_token(
         self,
         profile_edi_identifier: str,
+        key: str
     ) -> str | dict:
         """Create token. Returns JWT base64 digitally signed token.
         Args:
             profile_edi_identifier (str): Profile IAM edi identifier
+            key (str): authentication key
 
         Returns:
             Response object (str | dict)
@@ -54,9 +56,9 @@ class EdiTokenClient(Client):
             iam_lib.exceptions.IAMResponseError: On non-200 response
             iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
         """
-        route = "auth/v1/token"
+        route = f"auth/v1/token/{profile_edi_identifier}"
         form_params = {
-            "sub": profile_edi_identifier,
+            "key": key,
         }
         self.post(route=route, form_params=form_params)
         return response_model.response_data(self)
