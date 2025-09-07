@@ -61,11 +61,11 @@ class Client:
 
         Args:
             scheme (str): protocol scheme (http or https)
-            host (str):  authentication host domain or address
+            host (str): authentication host domain or address
             accept (str): accept type (JSON or XML)
             public_key_path (str): path to token signing public key
             algorithm (str): token signing algorithm
-            token (str): IAM JWT authentication token
+            token (str): IAM EDI authentication token
             truststore (str): path to truststore (defaults to None)
             timeout (int): request timeout to IAM service (defaults to 10 seconds)
 
@@ -334,11 +334,13 @@ def _validate_parameters(parameters: dict, public_key_path: str, algorithm: str)
         "parent_resource_key",  # Resource key of parent
         "descendants",  # Boolean (True or False)
         "permission",  # Resource permission (enumerated set: read, write, or changePermission)
-        "token",  # Base64 encoded JWT token of the client
+        "token",  # Base64 encoded EDI IAM JWT token of the client
         "given_name",  # Given name
         "family_name",  # Family name
         "email",  # Email address
-        "key"  # Authentication key
+        "key",  # Authentication key
+        "pasta-token",  # PASTA authentication token
+        "edi-token" # EDI IAM authentication token
     )
     for key,value in parameters.items():
         if key not in valid_parameters:
