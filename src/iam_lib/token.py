@@ -6,7 +6,7 @@
     token
 
 :Synopsis:
-    Perform JWT token validation
+    Perform EDI IAM authentication token validation
 :Author:
     servilla
 
@@ -24,9 +24,9 @@ logger = daiquiri.getLogger(__name__)
 
 
 def validate(token: str, public_key: bytes, algorithm: str):
-    """Validate JWT token
+    """Validate EDI token
 
-        token (str): JWT token
+        token (str): EDI IAM JWT token
         public_key (bytes): Public key
         algorithm (str): Digital signing-algorithm
     """
