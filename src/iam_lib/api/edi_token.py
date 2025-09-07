@@ -43,7 +43,7 @@ class EdiTokenClient(Client):
         profile_edi_identifier: str,
         key: str
     ) -> str | dict:
-        """Create token. Returns JWT base64 digitally signed token.
+        """Create token. Returns an EDI IAM JWT base64 digitally signed token.
         Args:
             profile_edi_identifier (str): Profile IAM edi identifier
             key (str): authentication key
@@ -61,6 +61,51 @@ class EdiTokenClient(Client):
             "key": key,
         }
         self.post(route=route, form_params=form_params)
+        return response_model.response_data(self)
+
+    def lock_token(
+        self,
+        profile_edi_identifier: str
+    ) -> str | dict:
+        """Lock tokens from being created.
+
+        Args:
+            profile_edi_identifier (str): Profile IAM edi identifier
+
+        Returns:
+            None
+
+        Raises:
+            iam_lib.exceptions.IAMRequestError: On HTTP request error
+            iam_lib.exceptions.IAMResponseError: On non-200 response
+            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
+        """
+        route = f"auth/v1/token/{profile_edi_identifier}"
+        self.delete(route=route)
+        return response_model.response_data(self)
+
+    def refresh_token(self,
+      auth_token: str,
+      edi_token: str
+    ) -> str | dict:
+        """Refresh token(s). Given a valid token pair (auth_token, edi_token), request a new token pair.
+
+        Args:
+            auth_token (str): PASTA authentication token
+            edi_token (str): IAM edi token
+
+        Returns:
+            Response object (str | dict)
+
+        Raise:
+
+        """
+        route = "auth/refresh"
+        form_params = {
+            "pasta-token": auth_token,
+            "edi-token": edi_token
+        }
+        self.post(route=route,  form_params=form_params)
         return response_model.response_data(self)
 
     def revoke_token(
@@ -84,23 +129,3 @@ class EdiTokenClient(Client):
         self.put(route=route)
         return response_model.response_data(self)
 
-    def lock_token(
-        self,
-        profile_edi_identifier: str
-    ) -> str | dict:
-        """Lock tokens from being created.
-    
-        Args:
-            profile_edi_identifier (str): Profile IAM edi identifier
-    
-        Returns:
-            None
-    
-        Raises:
-            iam_lib.exceptions.IAMRequestError: On HTTP request error
-            iam_lib.exceptions.IAMResponseError: On non-200 response
-            iam_lib.exceptions.IAMJSONDecodeError: On JSON decode error
-        """
-        route = f"auth/v1/token/{profile_edi_identifier}"
-        self.delete(route=route)
-        return response_model.response_data(self)

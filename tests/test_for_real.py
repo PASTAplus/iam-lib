@@ -13,6 +13,8 @@
 """
 import uuid
 
+import iam_lib.token
+from iam_lib.api.edi_token import EdiTokenClient
 from iam_lib.api.profile import ProfileClient
 from iam_lib.api.resource import ResourceClient
 from iam_lib.api.rule import RuleClient
@@ -158,6 +160,24 @@ def test_create_data_package():
         principal="EDI-b2757fee12634ccca40d2d689f5c0543",
         permission=Permission.READ,
     )
+
+def test_refresh_token():
+    client_token = make_token("EDI-6d92693416fde9af9c43fd7cd92d1028eadafa46")
+    edi_token_client = EdiTokenClient(
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
+        token=client_token,
+        truststore="/etc/ssl/certs/ca-certificates.crt",
+    )
+
+    auth_token = "dWlkPW1zZXJ2aWxsYSxvPUVESSxkYz1lZGlyZXBvc2l0b3J5LGRjPW9yZypodHRwczovL3Bhc3RhLmVkaXJlcG9zaXRvcnkub3JnL2F1dGhlbnRpY2F0aW9uKjE3NTczMDkwMjA2MjYqdmV0dGVkKmF1dGhlbnRpY2F0ZWQ=-Ayq8K6hSyiz0Mei2GyZqXjMiYqw0EQt7eqdxHb//46oTWRtA3CjUZ5ysiDJQAmMyv4feewaLWMSExBbTqKJyC7wnm9GBVuOqiYi7kjUoFTHlCLozrNgERl5RRJM5nV7+iJ4cgDsqcG4MQbHlxcFEuu+iWeP8nOfEhB4Ee7WSzvCRT5HYbn4lJWgeOgk+A7lfOxtlAv6cKXYsf1q9BDnKz8C0haDiPw+kXzu7FfDPAoAj9CaApCSk1EIxQLVAE7T6UWb/yYnANaGiF/VFRI7/qcJx6i9G4msQLkgHbihgeFr/xOz4znI4QMN31ys8LZP9/TFMoPFkyyNIIMMIyw5thA=="
+    edi_token = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFREktMmY4YTIyODc4ZDMzN2UwOWRkYWJhMTVlZTBlZWU5YmIyOTMzZmQ1NCIsImNuIjoibXNlcnZpbGxhIiwiZW1haWwiOm51bGwsInByaW5jaXBhbHMiOlsiRURJLTA3OGU2ZTNjZWU0ZjdmMjgxMmYxNTA3MDFkYTkzNTFhY2I1MWUwODkiLCJFREktN2JlMzUxMGQwOGRlZjBkZmM2Njc4MjRlYmQ0ZjRmMWJiZDc3MDIzNCIsIkVESS1iZGFlNzQ5NzJlZDcxMGM1NmIxZTBkZjE4Y2NiNmUyM2MzMWY2MGY2Il0sImlzRW1haWxFbmFibGVkIjpmYWxzZSwiaXNFbWFpbFZlcmlmaWVkIjpmYWxzZSwiaWRlbnRpdHlJZCI6MywiaWRwTmFtZSI6ImxkYXAiLCJpZHBVaWQiOiJ1aWQ9bXNlcnZpbGxhLG89RURJLGRjPWVkaXJlcG9zaXRvcnksZGM9b3JnIiwiaWRwQ25hbWUiOiJtc2VydmlsbGEiLCJpc3MiOiJodHRwczovL2F1dGguZWRpcmVwb3NpdG9yeS5vcmciLCJoZCI6ImVkaXJlcG9zaXRvcnkub3JnIiwiaWF0IjoxNzU3MTk3NDkwLCJuYmYiOjE3NTcxOTc0OTAsImV4cCI6MTc1NzIyNjI5MH0.LlD_es5kAMckwCYWLx_AwUEr0Eks33RWtYliy7DmHxiSrkKG1Dfy6-FSIu0Iuj_3BarP0LoP04BWR0h8ACjguw"
+
+    edi_token_response = edi_token_client.refresh_token(auth_token=auth_token, edi_token=edi_token)
+    response_printer(edi_token_response)
 
 
 def response_printer(response):
