@@ -85,7 +85,7 @@ class Client:
         self._token = _validate_token(token, public_key_path, algorithm)
         self._truststore = _validate_truststore(truststore)
         self._timeout = timeout
-        self._cookies = {"edi-token": token}
+        self._cookies = None if self._token is None else {"edi-token": token}
         self._response = None
 
     @property
@@ -145,7 +145,7 @@ class Client:
         self._truststore = _validate_truststore(truststore)
 
     @property
-    def response(self) -> None | requests.Response:
+    def response(self) -> requests.Response:
         return self._response
 
     @retry_connection()
@@ -277,11 +277,12 @@ class Client:
 
 
 def _validate_token(token: str, public_key_path: str, algorithm: str) -> str:
-    public_key = Path(public_key_path).read_text().encode("utf-8")
-    try:
-        jwt.decode(token, public_key, algorithms=algorithm)
-    except jwt.InvalidTokenError as e:
-        raise iam_lib.exceptions.IAMInvalidToken(f"Invalid token: {e}")
+    if token is not None:
+        public_key = Path(public_key_path).read_text().encode("utf-8")
+        try:
+            jwt.decode(token, public_key, algorithms=algorithm)
+        except jwt.InvalidTokenError as e:
+            raise iam_lib.exceptions.IAMInvalidToken(f"Invalid token: {e}")
     return token
 
 

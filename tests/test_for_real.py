@@ -162,7 +162,7 @@ def test_create_data_package():
     )
 
 def test_refresh_token():
-    client_token = make_token("EDI-6d92693416fde9af9c43fd7cd92d1028eadafa46")
+    client_token = make_token(Config.AUTH_SERVICE_ID)
     edi_token_client = EdiTokenClient(
         scheme=Config.SCHEME,
         host=Config.AUTH_HOST,
@@ -173,13 +173,30 @@ def test_refresh_token():
         truststore="/etc/ssl/certs/ca-certificates.crt",
     )
 
-    auth_token = "dWlkPW1zZXJ2aWxsYSxvPUVESSxkYz1lZGlyZXBvc2l0b3J5LGRjPW9yZypodHRwczovL3Bhc3RhLmVkaXJlcG9zaXRvcnkub3JnL2F1dGhlbnRpY2F0aW9uKjE3NTczMDkwMjA2MjYqdmV0dGVkKmF1dGhlbnRpY2F0ZWQ=-Ayq8K6hSyiz0Mei2GyZqXjMiYqw0EQt7eqdxHb//46oTWRtA3CjUZ5ysiDJQAmMyv4feewaLWMSExBbTqKJyC7wnm9GBVuOqiYi7kjUoFTHlCLozrNgERl5RRJM5nV7+iJ4cgDsqcG4MQbHlxcFEuu+iWeP8nOfEhB4Ee7WSzvCRT5HYbn4lJWgeOgk+A7lfOxtlAv6cKXYsf1q9BDnKz8C0haDiPw+kXzu7FfDPAoAj9CaApCSk1EIxQLVAE7T6UWb/yYnANaGiF/VFRI7/qcJx6i9G4msQLkgHbihgeFr/xOz4znI4QMN31ys8LZP9/TFMoPFkyyNIIMMIyw5thA=="
-    edi_token = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFREktMmY4YTIyODc4ZDMzN2UwOWRkYWJhMTVlZTBlZWU5YmIyOTMzZmQ1NCIsImNuIjoibXNlcnZpbGxhIiwiZW1haWwiOm51bGwsInByaW5jaXBhbHMiOlsiRURJLTA3OGU2ZTNjZWU0ZjdmMjgxMmYxNTA3MDFkYTkzNTFhY2I1MWUwODkiLCJFREktN2JlMzUxMGQwOGRlZjBkZmM2Njc4MjRlYmQ0ZjRmMWJiZDc3MDIzNCIsIkVESS1iZGFlNzQ5NzJlZDcxMGM1NmIxZTBkZjE4Y2NiNmUyM2MzMWY2MGY2Il0sImlzRW1haWxFbmFibGVkIjpmYWxzZSwiaXNFbWFpbFZlcmlmaWVkIjpmYWxzZSwiaWRlbnRpdHlJZCI6MywiaWRwTmFtZSI6ImxkYXAiLCJpZHBVaWQiOiJ1aWQ9bXNlcnZpbGxhLG89RURJLGRjPWVkaXJlcG9zaXRvcnksZGM9b3JnIiwiaWRwQ25hbWUiOiJtc2VydmlsbGEiLCJpc3MiOiJodHRwczovL2F1dGguZWRpcmVwb3NpdG9yeS5vcmciLCJoZCI6ImVkaXJlcG9zaXRvcnkub3JnIiwiaWF0IjoxNzU3Mjk2Njg1LCJuYmYiOjE3NTcyOTY2ODUsImV4cCI6MTc1NzMyNTQ4NX0.QI1IQrBr1PajfRuz8_iMUTB1qNcqeVBRUU_M2hR_rBVqznD2oVUSd97IbVposuFXM967VPfB9J6XG22HO6rDNQ"
+    auth_token = "dWlkPW1zZXJ2aWxsYSxvPUVESSxkYz1lZGlyZXBvc2l0b3J5LGRjPW9yZypodHRwczovL3Bhc3RhLmVkaXJlcG9zaXRvcnkub3JnL2F1dGhlbnRpY2F0aW9uKjE3NTc4MTE0MTM5MzMqdmV0dGVkKmF1dGhlbnRpY2F0ZWQ=-mzxMhqRzHNdPxsjnBUj4syn+zFPETvSwUn7CyjyJsd0I+sAF5vVGiHgQIrVMDg8Z3LkSsLQtRgwtik/Bx60rNCtzcu6APNuJoRqNYLLTu7CCWL2J+RaLGm64u0Lefg6zqQ1BkpJEe5AXTlSjDKYZwvPNvWzCphH1MtH8DYB25jcf8cY6kiNB86f8R2+925Ptoq8ONWdytiF6wgPyqCoZVvNrTGYD9oqkipNfIicw44v3o1IfcEEFb3Itv7J91ExQrJI6V2U2eHQi6ImnaBy4InD7p5gwaitnQ2nCO8uz5X10Gl0gQV8jbg88xCrcdPvUXQqPY6NMGR6rIRZq1NIsVQ=="
+    edi_token = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFREktMmY4YTIyODc4ZDMzN2UwOWRkYWJhMTVlZTBlZWU5YmIyOTMzZmQ1NCIsImNuIjoibXNlcnZpbGxhIiwiZW1haWwiOm51bGwsInByaW5jaXBhbHMiOlsiRURJLTA3OGU2ZTNjZWU0ZjdmMjgxMmYxNTA3MDFkYTkzNTFhY2I1MWUwODkiLCJFREktN2JlMzUxMGQwOGRlZjBkZmM2Njc4MjRlYmQ0ZjRmMWJiZDc3MDIzNCIsIkVESS1iZGFlNzQ5NzJlZDcxMGM1NmIxZTBkZjE4Y2NiNmUyM2MzMWY2MGY2Il0sImlzRW1haWxFbmFibGVkIjpmYWxzZSwiaXNFbWFpbFZlcmlmaWVkIjpmYWxzZSwiaWRlbnRpdHlJZCI6MywiaWRwTmFtZSI6ImxkYXAiLCJpZHBVaWQiOiJ1aWQ9bXNlcnZpbGxhLG89RURJLGRjPWVkaXJlcG9zaXRvcnksZGM9b3JnIiwiaWRwQ25hbWUiOiJtc2VydmlsbGEiLCJpc3MiOiJodHRwczovL2F1dGguZWRpcmVwb3NpdG9yeS5vcmciLCJoZCI6ImVkaXJlcG9zaXRvcnkub3JnIiwiaWF0IjoxNzU3NzgyODQxLCJuYmYiOjE3NTc3ODI4NDEsImV4cCI6MTc1NzgxMTY0MX0.eTx-QZV_kfzS5p30bIiVoiRPkZtw0vJZ10bMZCUgV87CmwEsW17BV7bFBEEikBHX445heme3d-yfOiq20l4aQQ"
 
     edi_token_response = edi_token_client.refresh_token(auth_token=auth_token, edi_token=edi_token)
     response_printer(edi_token_response)
 
     token = Token(edi_token_response["edi-token"])
+    token.validate(Config.PUBLIC_KEY_PATH, algorithm=Config.JWT_ALGORITHM),
+
+def test_create_token():
+    edi_token_client = EdiTokenClient(
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
+        token=None,
+        truststore="/etc/ssl/certs/ca-certificates.crt",
+    )
+
+    edi_token_response = edi_token_client.create_token(profile_edi_identifier=Config.PUBLIC_ID, key=Config.AUTH_KEY)
+    response_printer(edi_token_response)
+
+    token = Token(edi_token_response["token"])
     token.validate(Config.PUBLIC_KEY_PATH, algorithm=Config.JWT_ALGORITHM),
 
 def response_printer(response):
