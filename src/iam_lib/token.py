@@ -99,10 +99,10 @@ class Token:
     def expiry(self) -> int:
         return self.payload.get("exp")
 
-    def validate(self, public_key_path: bytes, algorithm: str):
+    def validate(self, public_key_path: str, algorithm: str):
         """Validate EDI token
 
-            public_key (bytes): Public key
+            public_key (str): Public key
             algorithm (str): Digital signing-algorithm
         """
         with open(Path(public_key_path), "r") as f:
