@@ -100,7 +100,7 @@ class EdiTokenClient(Client):
         Raise:
 
         """
-        route = "auth/refresh"
+        route = "auth/v1/refresh"
         form_params = {
             "pasta-token": auth_token,
             "edi-token": edi_token
