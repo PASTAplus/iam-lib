@@ -99,6 +99,10 @@ class Token:
     def expiry(self) -> int:
         return self.payload.get("exp")
 
+    @property
+    def links(self) -> list:
+        return self.payload.get("links")
+
     def validate(self, public_key_path: str, algorithm: str):
         """Validate EDI token
 
