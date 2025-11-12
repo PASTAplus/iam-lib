@@ -14,6 +14,7 @@
 import uuid
 
 from iam_lib.token import Token
+from iam_lib.api.api_key import ApiKeyClient
 from iam_lib.api.edi_token import EdiTokenClient
 from iam_lib.api.profile import ProfileClient
 from iam_lib.api.resource import ResourceClient
@@ -196,8 +197,27 @@ def test_create_token():
     edi_token_response = edi_token_client.create_token(profile_edi_identifier=Config.PUBLIC_ID, key=Config.AUTH_KEY)
     response_printer(edi_token_response)
 
-    token = Token(edi_token_response["token"])
+    token = Token(edi_token_response["edi-token"])
     token.validate(Config.PUBLIC_KEY_PATH, algorithm=Config.JWT_ALGORITHM),
+
+def test_key_to_token():
+    api_key_client = ApiKeyClient(
+        scheme=Config.SCHEME,
+        host=Config.AUTH_HOST,
+        accept=Config.ACCEPT,
+        public_key_path=Config.PUBLIC_KEY_PATH,
+        algorithm=Config.JWT_ALGORITHM,
+        token=None,
+        truststore="/etc/ssl/certs/ca-certificates.crt",
+    )
+
+    api_key_response = api_key_client.key_to_token(key=Config.API_KEY)
+    response_printer(api_key_response)
+
+    token = Token(api_key_response["edi-token"])
+    token.validate(Config.PUBLIC_KEY_PATH, algorithm=Config.JWT_ALGORITHM),
+
+
 
 def response_printer(response):
     for k,v in response.items():
