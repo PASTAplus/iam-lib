@@ -20,7 +20,7 @@ import daiquiri
 import requests
 
 from iam_lib.models.permission import Permission, PERMISSION_MAP
-from tests.fixtures import rule_client, cookies, headers
+from tests.conftest import rule_client, cookies, headers
 
 
 logger = daiquiri.getLogger(__name__)

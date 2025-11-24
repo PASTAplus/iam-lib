@@ -2,7 +2,7 @@
 :Mod: test_client
 
 :Synopsis:
-    Pytest for client
+    Pytest for the client API
 
 :Author:
     Mark Servilla
@@ -19,7 +19,6 @@ import jwt
 import requests
 
 from tests.config import Config
-from tests.fixtures import client, cookies, headers
 
 
 logger = daiquiri.getLogger(__name__)

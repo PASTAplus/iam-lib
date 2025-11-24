@@ -19,12 +19,6 @@ from unittest.mock import MagicMock
 import daiquiri
 import requests
 
-from tests.fixtures import (
-    cookies,
-    eml_client,
-    headers
-)
-
 
 logger = daiquiri.getLogger(__name__)
 

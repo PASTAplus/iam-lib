@@ -14,15 +14,10 @@
 :Created:
     5/15/25
 """
-from datetime import datetime, timedelta, timezone
 from unittest.mock import MagicMock
 
 import daiquiri
 import requests
-
-
-from tests.fixtures import authorized_client, cookies, headers
-from tests.utilities import make_token
 
 
 logger = daiquiri.getLogger(__name__)
