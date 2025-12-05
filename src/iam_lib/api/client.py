@@ -307,7 +307,8 @@ def _validate_host(host: str) -> str:
         "127.0.0.1",
         "auth.edirepository.org",
         "auth-s.edirepository.org",
-        "auth-d.edirepository.org"
+        "auth-d.edirepository.org",
+        "auth-x.edirepository.org"
     )
     hostname = host.split(":")[0]  # Disregard port if specified
     if hostname not in valid_hosts:
