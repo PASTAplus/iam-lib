@@ -178,12 +178,13 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# pixi environments
-.pixi
-*.egg-info
-
 # zed editor
 .zed
 
 # JetBrains
 .idea
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml
+*.egg-info
