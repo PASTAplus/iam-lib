@@ -50,7 +50,7 @@ pip = ">=26.0.1,<27"
 iam-lib = { path = ".", editable = true }
 
 [tool.pixi.feature.test.dependencies]
-pytest = ">=8.3.5,<9"
+pytest = ">=9.0.3,<10"
 pytest-mock = ">=3.14.0,<4"
 
 [tool.pixi.feature.lint.dependencies]
