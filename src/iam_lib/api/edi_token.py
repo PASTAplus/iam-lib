@@ -85,13 +85,13 @@ class EdiTokenClient(Client):
         return response_model.response_data(self)
 
     def refresh_token(self,
-      auth_token: str,
-      edi_token: str
+      edi_token: str,
+      auth_token: str = None  # DEPRECATED
     ) -> str | dict:
         """Refresh token(s). Given a valid token pair (auth_token, edi_token), request a new token pair.
 
         Args:
-            auth_token (str): PASTA authentication token
+            auth_token (str | None): PASTA authentication token DEPRECATED
             edi_token (str): IAM edi token
 
         Returns:
