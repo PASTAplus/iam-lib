@@ -40,10 +40,9 @@ def make_token(sub: str) -> str:
         "principals": [],
         "isEmailEnabled": False,
         "isEmailVerified": False,
-        "identityId": None,
         "idpName": None,
         "idpUid": None,
-        "idpCname": None,
+        "idpCommonName": None,
     }
     private_key_path = Config.PRIVATE_KEY_PATH
     algorithm = Config.JWT_ALGORITHM
