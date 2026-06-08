@@ -43,7 +43,6 @@ lint = "ruff check ."
 
 [tool.pixi.dependencies]
 python = ">=3.12,<3.14"
-pixi-pycharm = ">=0.0.8,<0.0.9"
 pip = ">=26.0.1,<27"
 
 [tool.pixi.pypi-dependencies]
