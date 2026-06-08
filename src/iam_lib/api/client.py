@@ -78,7 +78,7 @@ class Client:
         """
 
         self._scheme = _validate_scheme(scheme)
-        self._host = _validate_host(host)
+        self._host = host
         self._accept = _validate_accept(accept)
         self._public_key_path = _validate_public_key_path(public_key_path)
         self._algorithm = algorithm
@@ -102,7 +102,7 @@ class Client:
 
     @host.setter
     def host(self, host: str):
-        self._host = _validate_host(host)
+        self._host = host
 
     @property
     def accept(self) -> str:
@@ -137,7 +137,7 @@ class Client:
         self._token = _validate_token(token, self._public_key_path, self._algorithm)
 
     @property
-    def truststore(self) -> str:
+    def truststore(self) -> str | bool:
         return self._truststore
 
     @truststore.setter
@@ -299,22 +299,6 @@ def _validate_scheme(scheme: str) -> str:
     if scheme.lower() not in ("http", "https"):
         raise iam_lib.exceptions.IAMInvalidScheme(f"Invalid URL: scheme '{scheme}' should be 'http' or 'https'")
     return scheme.lower()
-
-
-def _validate_host(host: str) -> str:
-    valid_hosts = (
-        "localhost",
-        "127.0.0.1",
-        "auth.edirepository.org",
-        "auth-s.edirepository.org",
-        "auth-d.edirepository.org",
-        "auth-x.edirepository.org"
-    )
-    hostname = host.split(":")[0]  # Disregard port if specified
-    if hostname not in valid_hosts:
-        msg = f"Invalid host '{host}': must be one of '{", ".join(valid_hosts)}'"
-        raise iam_lib.exceptions.IAMInvalidHost(msg)
-    return host
 
 
 def _validate_accept(accept: str) -> str:
